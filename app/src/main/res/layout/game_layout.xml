@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/GameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/GameView"
+            android:background="@color/colorPrimaryDark"/>
+    <LinearLayout
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent">
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical">
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnMenu"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_menu"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:contentDescription="@string/level_select"/>
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/stat_notify_sync_noanim"
+                    android:id="@+id/restartButton"
+                    android:scaleType="fitCenter"
+                    android:padding="8dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/restart"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center">
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_square"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+
+                    android:contentDescription="@string/minimum_square_percentage"/>
+            <TextView
+                    android:text="10/50%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/squareTextView"
+                    android:textAllCaps="true"
+                    android:gravity="center_vertical"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="end|center_vertical">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/circlesTextView"
+                      android:textSize="24sp"
+                      android:layout_marginStart="15dp"
+                      android:gravity="center"
+                      android:text="50"
+                      android:textColor="@android:color/white"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:contentDescription="@string/maximum_circles_count"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

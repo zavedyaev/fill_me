@@ -1,0 +1,56 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textViewStyle">@font/font_work_sans</item>
+        <item name="fontFamily">@font/font_work_sans</item>
+    </style>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.Fullscreen" parent="AppTheme.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="AppTheme.TransparentBackground" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@color/transparentActivityBackground</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- CardView theme. -->
+    <style name="CardViewTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/font_work_sans_bold</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CardViewBody" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/font_work_sans</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    <style name="CardViewMetadata" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/font_work_sans</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Button theme. -->
+    <style name="TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:fontFamily">@font/font_rubik_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:fontFamily">@font/font_rubik_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="ContainedButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/font_rubik_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+</resources>

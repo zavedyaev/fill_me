@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_logo_part_1"
+            android:layout_gravity="center_horizontal"
+            android:textSize="50sp"
+            android:textAllCaps="true"
+            android:paddingStart="0dp"
+            android:paddingEnd="50dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_logo_part_2"
+            android:layout_gravity="center_horizontal"
+            android:textSize="50sp"
+            android:textAllCaps="true"
+            android:paddingStart="50dp"
+            android:paddingEnd="0dp"/>
+
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_game"
+                android:id="@+id/newGameButton"
+                style="@style/ContainedButton"
+                android:layout_marginTop="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/continue_game"
+                android:id="@+id/continueButton"
+                style="@style/ContainedButton"
+                android:layout_marginTop="20dp"
+                android:visibility="invisible"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/level_select"
+                android:id="@+id/levelSelectButton"
+                style="@style/OutlinedButton"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:id="@+id/settingsButton"
+                style="@style/TextButton"/>
+    </LinearLayout>
+</LinearLayout>
