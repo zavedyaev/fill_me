@@ -11,7 +11,7 @@ import ru.zavedyaev.fillme.primitive.Circle2D
 import ru.zavedyaev.fillme.primitive.Point2D
 import java.util.*
 
-class MyGLSurfaceView(
+class GLSurfaceView(
     context: Context,
     private val remainedCirclesCountView: TextView,
     private val squareTextView: TextView,

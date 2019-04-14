@@ -10,7 +10,8 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -22,26 +23,72 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-            <TextView
-                    android:id="@+id/levelName"
-                    android:text="@string/level_name"
-                    android:layout_width="match_parent"
-                    android:height="44dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:textAppearance="@style/CardViewTitle"/>
-            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:orientation="horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+            <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:id="@+id/levelRating"
-                    android:numStars="3"
-                    android:isIndicator="true"
-                    android:rating="2"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+                <TextView
+                        android:id="@+id/levelName"
+                        android:text="@string/level_name"
+                        android:layout_width="match_parent"
+                        android:height="44dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:textAppearance="@style/CardViewTitle"/>
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/levelRating"
+                        android:numStars="3"
+                        android:isIndicator="true"
+                        android:rating="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+                <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_expand_more"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/expand_button"
+                        android:layout_gravity="end"
+                        android:id="@+id/expandMoreButton"/>
+                <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_expand_less"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/expand_button"
+                        android:layout_gravity="end"
+                        android:id="@+id/expandLessButton"
+                        android:visibility="gone"/>
+            </LinearLayout>
+
         </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:id="@+id/levelDescription"
+                android:visibility="gone">
+            <include layout="@layout/level_description_view"/>
+        </LinearLayout>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

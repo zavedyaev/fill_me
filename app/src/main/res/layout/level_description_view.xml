@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/levelRating1"
+                android:numStars="1"
+                android:isIndicator="true"
+                android:rating="1"
+                android:layout_gravity="center_vertical"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_square_black"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/levelRating1MinSquare"
+                android:text="@string/min_percentage"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_circle_black"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/levelRating1MaxCircles"
+                android:text="@string/max_circles_count"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/levelRating2"
+                android:numStars="1"
+                android:isIndicator="true"
+                android:rating="1"
+                android:layout_gravity="center_vertical"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_square_black"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/levelRating2MinSquare"
+                android:text="@string/min_percentage"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_circle_black"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/levelRating2MaxCircles"
+                android:text="@string/max_circles_count"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/levelRating3"
+                android:numStars="1"
+                android:isIndicator="true"
+                android:rating="0"
+                android:layout_gravity="center_vertical"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_square_black"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/levelRating3MinSquare"
+                android:text="@string/min_percentage"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_circle_black"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="4dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/levelRating3MaxCircles"
+                android:text="@string/max_circles_count"
+                android:textAppearance="@style/CardViewBody"
+                android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+</LinearLayout>

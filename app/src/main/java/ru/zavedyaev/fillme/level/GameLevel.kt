@@ -6,7 +6,8 @@ import ru.zavedyaev.fillme.primitive.Triangle
 
 class GameLevel(
     val triangles: List<Triangle>,
-    val winConditions: WinConditions
+    val winConditions: WinConditions,
+    val starsToUnlock: Int
 ) {
     fun draw(positionHandle: Int, colorHandle: Int, color: FloatArray) {
         triangles.forEach { triangle ->

@@ -42,7 +42,8 @@ val levelPack0 = LevelPack(
                 WinCondition(0.4f, 2),
                 WinCondition(0.55f, 1),
                 WinCondition(0.65f, 1)
-            )
+            ),
+            0
         ),
         1 to GameLevel(
             getTrianglesAroundCircle(3f, Point2D(-1.5f, 4f)) + getTrianglesAroundCircle(3f, Point2D(1.5f, -4f)) +
@@ -70,7 +71,8 @@ val levelPack0 = LevelPack(
                 WinCondition(0.4f, 4),
                 WinCondition(0.55f, 3),
                 WinCondition(0.65f, 2)
-            )
+            ),
+            0
         ),
         2 to GameLevel(
             listOf(
@@ -117,7 +119,8 @@ val levelPack0 = LevelPack(
                 WinCondition(0.65f, 6),
                 WinCondition(0.65f, 5),
                 WinCondition(0.65f, 4)
-            )
+            ),
+            1
         ),
         3 to GameLevel(
             emptyList()
@@ -127,7 +130,8 @@ val levelPack0 = LevelPack(
                 WinCondition(0.999f, 3),
                 WinCondition(0.999f, 2),
                 WinCondition(0.999f, 1)
-            )
+            ),
+            3
         ),
         4 to GameLevel(
             getTrianglesAroundCircle(14f, Point2D(0f, -7f)) + GameLevel.fillTop()
@@ -137,7 +141,8 @@ val levelPack0 = LevelPack(
                 WinCondition(0.90f, 3),
                 WinCondition(0.90f, 2),
                 WinCondition(0.90f, 1)
-            )
+            ),
+            4
         ),
         5 to GameLevel(
             getTrianglesAroundCircle(6f, Point2D(0f, -6f)) + getTrianglesAroundCircle(6f, Point2D(0f, 6f))
@@ -147,7 +152,8 @@ val levelPack0 = LevelPack(
                 WinCondition(0.60f, 2),
                 WinCondition(0.75f, 2),
                 WinCondition(0.90f, 2)
-            )
+            ),
+            6
         ),
         6 to GameLevel(
             listOf(
@@ -169,7 +175,8 @@ val levelPack0 = LevelPack(
             ).getTriangles()
                     + GameLevel.fillAll(),
 
-            SameMaxCirclesCountWinCondition(0.5f, 0.6f, 0.7f, 10)
+            SameMaxCirclesCountWinCondition(0.5f, 0.6f, 0.7f, 10),
+            8
         )
     )
 )

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class GameActivity : AppCompatActivity() {
 
-    private lateinit var gLView: MyGLSurfaceView
+    private lateinit var gLView: GLSurfaceView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class GameActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        gLView = MyGLSurfaceView(
+        gLView = GLSurfaceView(
             this,
             remainedCirclesCountView,
             squareTextView,

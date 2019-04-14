@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import me.zhanghai.android.materialratingbar.MaterialRatingBar
 import ru.zavedyaev.fillme.level.LevelPackProgress
 import ru.zavedyaev.fillme.level.LevelStatus
 import ru.zavedyaev.fillme.level.LevelsPacks
@@ -28,40 +27,13 @@ class LevelEndActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.levelName).text = resources.getString(R.string.level_name, levelId)
 
-        val levelRating1 = findViewById<MaterialRatingBar>(R.id.levelRating1)
-        if (status.starsCount > 0) {
-            levelRating1.rating = 1f
-        } else {
-            levelRating1.rating = 0f
-        }
-
-        val levelRating2 = findViewById<MaterialRatingBar>(R.id.levelRating2)
-        if (status.starsCount > 1) {
-            levelRating2.rating = 1f
-        } else {
-            levelRating2.rating = 0f
-        }
-
-        val levelRating3 = findViewById<MaterialRatingBar>(R.id.levelRating3)
-        if (status.starsCount > 2) {
-            levelRating3.rating = 1f
-        } else {
-            levelRating3.rating = 0f
-        }
-
-        findViewById<TextView>(R.id.levelRating1MinSquare).text =
-                resources.getString(R.string.min_percentage, (winConditions.oneStar.minSquare * 100).toInt())
-        findViewById<TextView>(R.id.levelRating2MinSquare).text =
-                resources.getString(R.string.min_percentage, (winConditions.twoStars.minSquare * 100).toInt())
-        findViewById<TextView>(R.id.levelRating3MinSquare).text =
-                resources.getString(R.string.min_percentage, (winConditions.threeStars.minSquare * 100).toInt())
-
-        findViewById<TextView>(R.id.levelRating1MaxCircles).text =
-                resources.getString(R.string.max_circles_count, winConditions.oneStar.maxCirclesCount)
-        findViewById<TextView>(R.id.levelRating2MaxCircles).text =
-                resources.getString(R.string.max_circles_count, winConditions.twoStars.maxCirclesCount)
-        findViewById<TextView>(R.id.levelRating3MaxCircles).text =
-                resources.getString(R.string.max_circles_count, winConditions.threeStars.maxCirclesCount)
+        LevelDescriptionHelper.fillDescription(
+            { id: Int -> findViewById(id) },
+            { id: Int -> findViewById(id) },
+            resources,
+            status.starsCount,
+            winConditions
+        )
 
         findViewById<MaterialButton>(R.id.restartButton).setOnClickListener {
             val i = Intent(this, GameActivity::class.java)
@@ -70,21 +42,30 @@ class LevelEndActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        //todo think about restrictions by stars count
         val nextLevelButton = findViewById<MaterialButton>(R.id.nextLevelButton)
         if (levelPack.levels.size > levelId + 1) {
-            nextLevelButton.setOnClickListener {
-                val i = Intent(this, GameActivity::class.java)
-                i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
-                i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, levelId + 1)
-                startActivity(i)
+            val nextLevel = LevelsPacks.packs[levelPackId]!!.levels[levelId + 1]!!
+            if (nextLevel.starsToUnlock <= ProgressInstance.progress.getStarsCount()) {
+                nextLevelButton.setOnClickListener {
+                    val i = Intent(this, GameActivity::class.java)
+                    i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
+                    i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, levelId + 1)
+                    startActivity(i)
+                }
+            } else {
+                nextLevelButton.isEnabled = false
             }
         } else if (LevelsPacks.packs[levelPackId + 1] != null) {
-            nextLevelButton.setOnClickListener {
-                val i = Intent(this, GameActivity::class.java)
-                i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId + 1)
-                i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
-                startActivity(i)
+            val nextLevel = LevelsPacks.packs[levelPackId + 1]!!.levels[0]!!
+            if (nextLevel.starsToUnlock <= ProgressInstance.progress.getStarsCount()) {
+                nextLevelButton.setOnClickListener {
+                    val i = Intent(this, GameActivity::class.java)
+                    i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId + 1)
+                    i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
+                    startActivity(i)
+                }
+            } else {
+                nextLevelButton.isEnabled = false
             }
         } else {
             nextLevelButton.isEnabled = false
