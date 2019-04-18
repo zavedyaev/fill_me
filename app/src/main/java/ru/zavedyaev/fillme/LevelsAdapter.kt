@@ -31,7 +31,7 @@ class LevelsAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        val starsCount = ProgressInstance.progress.getStarsCount()
+        val starsCount = ProgressInstance.getStarsCount()
         //todo think about level packs
         val levelPack = 0
         val level = LevelsPacks.packs[levelPack]!!.levels[position]!!
@@ -54,8 +54,7 @@ class LevelsAdapter(
             ViewType.UNLOCKED -> {
                 //todo level icon
                 //holder.itemView.findViewById(R.id.levelIcon)
-                val rating =
-                    ProgressInstance.progress.levelPackProgress[levelPack]!!.levelProgress[position]?.starsCount ?: 0
+                val rating = ProgressInstance.getLevelStatus(levelPack, position).starsCount
                 holder.itemView.findViewById<MaterialRatingBar>(R.id.levelRating).rating = rating.toFloat()
                 holder.itemView.setOnClickListener {
                     val i = Intent(activity, GameActivity::class.java)
@@ -103,7 +102,7 @@ class LevelsAdapter(
                 )
             }
             ViewType.LOCKED -> {
-                val starsCount = ProgressInstance.progress.getStarsCount()
+                val starsCount = ProgressInstance.getStarsCount()
                 holder.itemView.findViewById<TextView>(R.id.starsRequired).text =
                         holder.itemView.resources.getString(R.string.stars_required, starsCount, level.starsToUnlock)
             }

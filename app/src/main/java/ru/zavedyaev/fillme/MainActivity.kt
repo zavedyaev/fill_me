@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val atLeastOneStar = ProgressInstance.progress.getStarsCount() > 0
+        val atLeastOneStar = ProgressInstance.getStarsCount() > 0
 
         val newGameButton = findViewById<MaterialButton>(R.id.newGameButton)
         val continueGameButton = findViewById<MaterialButton>(R.id.continueButton)
@@ -33,26 +33,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        continueGameButton.setOnClickListener {
-            val lastLevelPackId = ProgressInstance.progress.levelPackProgress.keys.max() ?: 0
-            val lastLevelId =
-                ProgressInstance.progress.levelPackProgress[lastLevelPackId]?.levelProgress?.keys?.max() ?: 0
-
-            val lastLevelStarsCount =
-                ProgressInstance.progress.levelPackProgress[lastLevelPackId]?.levelProgress?.get(lastLevelId)?.starsCount
-                    ?: 0
-
-            val i = Intent(this, GameActivity::class.java)
-            if (lastLevelStarsCount < 3) {
-                i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, lastLevelPackId)
-                i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, lastLevelId)
-            } else {
-                //todo think about restrictions
-                i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, lastLevelPackId)
-                i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, lastLevelId + 1)
+        val levelToContinue = ProgressInstance.getLevelToContinue()
+        if (levelToContinue == null) {
+            continueGameButton.visibility = View.GONE
+        } else {
+            continueGameButton.setOnClickListener {
+                val i = Intent(this, GameActivity::class.java)
+                i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelToContinue.levelPackId)
+                i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, levelToContinue.levelId)
+                startActivity(i)
             }
-
-            startActivity(i)
         }
 
         findViewById<MaterialButton>(R.id.levelSelectButton).setOnClickListener {

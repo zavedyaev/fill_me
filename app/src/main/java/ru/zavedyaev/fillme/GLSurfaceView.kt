@@ -15,14 +15,14 @@ class GLSurfaceView(
     context: Context,
     private val remainedCirclesCountView: TextView,
     private val squareTextView: TextView,
-    levelPackId: Int,
-    levelId: Int,
+    private val levelPackId: Int,
+    private val levelId: Int,
     private val showLevelEndActivity: () -> Unit
 ) : GLSurfaceView(context) {
 
     private val renderer: GLRenderer
     private val level: GameLevel
-    private val status: LevelStatus
+    private var status: LevelStatus
     private var winCondition: WinCondition
 
     private var previousX: Float? = null
@@ -46,9 +46,7 @@ class GLSurfaceView(
         renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
 
         level = LevelsPacks.packs[levelPackId]!!.levels[levelId]!!
-        val levelPackProgress =
-            ProgressInstance.progress.levelPackProgress.getOrPut(levelPackId) { LevelPackProgress(hashMapOf()) }
-        status = levelPackProgress.levelProgress.getOrPut(levelId) { LevelStatus(0) }
+        status = ProgressInstance.getLevelStatus(levelPackId, levelId)
         winCondition = getCurrentWinCondition()
 
 
@@ -94,7 +92,7 @@ class GLSurfaceView(
         val currentStarsCount = getCurrentStarsCount(currentCirclesSquare)
 
         if (currentStarsCount > status.starsCount) {
-            status.starsCount = currentStarsCount
+            status = ProgressInstance.updateStarsCount(levelPackId, levelId, currentStarsCount, context)
         }
     }
 

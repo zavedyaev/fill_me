@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import ru.zavedyaev.fillme.level.LevelPackProgress
-import ru.zavedyaev.fillme.level.LevelStatus
 import ru.zavedyaev.fillme.level.LevelsPacks
 import ru.zavedyaev.fillme.level.ProgressInstance
 
@@ -21,9 +19,7 @@ class LevelEndActivity : AppCompatActivity() {
 
         val levelPack = LevelsPacks.packs[levelPackId]!!
         val winConditions = levelPack.levels[levelId]!!.winConditions
-        val levelPackProgress =
-            ProgressInstance.progress.levelPackProgress.getOrPut(levelPackId) { LevelPackProgress(hashMapOf()) }
-        val status = levelPackProgress.levelProgress.getOrPut(levelId) { LevelStatus(0) }
+        val status = ProgressInstance.getLevelStatus(levelPackId, levelId)
 
         findViewById<TextView>(R.id.levelName).text = resources.getString(R.string.level_name, levelId)
 
@@ -43,9 +39,10 @@ class LevelEndActivity : AppCompatActivity() {
         }
 
         val nextLevelButton = findViewById<MaterialButton>(R.id.nextLevelButton)
+        val starsCount = ProgressInstance.getStarsCount()
         if (levelPack.levels.size > levelId + 1) {
             val nextLevel = LevelsPacks.packs[levelPackId]!!.levels[levelId + 1]!!
-            if (nextLevel.starsToUnlock <= ProgressInstance.progress.getStarsCount()) {
+            if (nextLevel.starsToUnlock <= starsCount) {
                 nextLevelButton.setOnClickListener {
                     val i = Intent(this, GameActivity::class.java)
                     i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
@@ -57,7 +54,7 @@ class LevelEndActivity : AppCompatActivity() {
             }
         } else if (LevelsPacks.packs[levelPackId + 1] != null) {
             val nextLevel = LevelsPacks.packs[levelPackId + 1]!!.levels[0]!!
-            if (nextLevel.starsToUnlock <= ProgressInstance.progress.getStarsCount()) {
+            if (nextLevel.starsToUnlock <= starsCount) {
                 nextLevelButton.setOnClickListener {
                     val i = Intent(this, GameActivity::class.java)
                     i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId + 1)
