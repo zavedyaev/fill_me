@@ -8,29 +8,48 @@ import com.google.android.material.button.MaterialButton
 import ru.zavedyaev.fillme.level.ProgressInstance
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var newGameButton: MaterialButton
+    private lateinit var continueGameButton: MaterialButton
+    private lateinit var levelSelectButton: MaterialButton
+    private lateinit var settingsButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val atLeastOneStar = ProgressInstance.getStarsCount() > 0
-
-        val newGameButton = findViewById<MaterialButton>(R.id.newGameButton)
-        val continueGameButton = findViewById<MaterialButton>(R.id.continueButton)
-
-        if (atLeastOneStar) {
-            newGameButton.visibility = View.GONE
-            continueGameButton.visibility = View.VISIBLE
-        } else {
-            newGameButton.visibility = View.VISIBLE
-            continueGameButton.visibility = View.GONE
-        }
+        newGameButton = findViewById(R.id.newGameButton)
+        continueGameButton = findViewById(R.id.continueButton)
+        levelSelectButton = findViewById(R.id.levelSelectButton)
+        settingsButton = findViewById(R.id.settingsButton)
 
         newGameButton.setOnClickListener {
             val i = Intent(this, GameActivity::class.java)
             i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, 0)
             i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
             startActivity(i)
+        }
+
+        levelSelectButton.setOnClickListener {
+            val i = Intent(this, LevelSelectActivity::class.java)
+            startActivity(i)
+        }
+
+        settingsButton.setOnClickListener {
+            val i = Intent(this, SettingsActivity::class.java)
+            startActivity(i)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val atLeastOneStar = ProgressInstance.getStarsCount() > 0
+        if (atLeastOneStar) {
+            newGameButton.visibility = View.GONE
+            continueGameButton.visibility = View.VISIBLE
+        } else {
+            newGameButton.visibility = View.VISIBLE
+            continueGameButton.visibility = View.GONE
         }
 
         val levelToContinue = ProgressInstance.getLevelToContinue()
@@ -43,11 +62,6 @@ class MainActivity : AppCompatActivity() {
                 i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, levelToContinue.levelId)
                 startActivity(i)
             }
-        }
-
-        findViewById<MaterialButton>(R.id.levelSelectButton).setOnClickListener {
-            val i = Intent(this, LevelSelectActivity::class.java)
-            startActivity(i)
         }
     }
 

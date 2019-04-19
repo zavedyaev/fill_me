@@ -144,6 +144,11 @@ object ProgressInstance {
             progress = Progress(mapOf(0 to LevelPackProgress(mapOf())))
         }
     }
+
+    fun resetProgress(context: Context) {
+        val updatedProgress = Progress(mapOf(0 to LevelPackProgress(mapOf())))
+        saveProgress(context, updatedProgress)
+    }
 }
 
 data class LevelPackAndLevelId(
