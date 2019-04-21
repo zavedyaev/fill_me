@@ -38,9 +38,9 @@ object Border2D {
                     minSpaceLength
                 )
 
-    fun draw(positionHandle: Int, colorHandle: Int, color: FloatArray) {
+    fun draw(positionHandle: Int, colorHandle: Int, textureHandle: Int, color: FloatArray) {
         triangles.forEach { triangle ->
-            triangle.draw(positionHandle, colorHandle, color)
+            triangle.draw(positionHandle, colorHandle, textureHandle, color)
         }
     }
 

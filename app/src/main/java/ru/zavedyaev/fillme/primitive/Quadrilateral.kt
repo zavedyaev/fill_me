@@ -20,9 +20,9 @@ open class Quadrilateral(
         return abcTriangle.getSquare() + acdTriangle.getSquare()
     }
 
-    fun draw(positionHandle: Int, colorHandle: Int, color1: FloatArray, color2: FloatArray) {
-        abcTriangle.draw(positionHandle, colorHandle, color1)
-        acdTriangle.draw(positionHandle, colorHandle, color2)
+    fun draw(positionHandle: Int, colorHandle: Int, textureHandle: Int, color1: FloatArray, color2: FloatArray) {
+        abcTriangle.draw(positionHandle, colorHandle, textureHandle, color1)
+        acdTriangle.draw(positionHandle, colorHandle, textureHandle, color2)
     }
 
     fun getTriangles(): List<Triangle> = listOf(abcTriangle, acdTriangle)

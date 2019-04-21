@@ -6,7 +6,8 @@ open class Point(
     val z: Float
 ) {
     companion object {
-        const val COORDS_PER_VERTEX = 3
-        const val BYTES_PER_VERTEX = 4
+        const val COORDS_PER_POINT = 3
+        const val BYTES_PER_FLOAT = 4
+        const val BYTES_PER_POINT = COORDS_PER_POINT * BYTES_PER_FLOAT
     }
 }

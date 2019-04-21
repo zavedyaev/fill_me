@@ -9,6 +9,7 @@ import android.widget.TextView
 import ru.zavedyaev.fillme.level.*
 import ru.zavedyaev.fillme.primitive.Circle2D
 import ru.zavedyaev.fillme.primitive.Point2D
+import ru.zavedyaev.fillme.shader.TextureHelper
 import java.util.*
 
 class GLSurfaceView(
@@ -35,7 +36,7 @@ class GLSurfaceView(
 
         val defaultDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val rotation = defaultDisplay.rotation
-        renderer = GLRenderer(rotation, levelPackId, levelId)
+        renderer = GLRenderer(context, rotation, levelPackId, levelId)
 
         // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(renderer)
@@ -112,6 +113,7 @@ class GLSurfaceView(
                     previousTime = Date().time
 
                     val point = renderer.transformDisplayCoordinates(x, y)
+                    renderer.drawingCircleTextureId = TextureHelper.getRandomCircleTextureId()
                     renderer.drawingCircle = Circle2D(point, 0.1f)
                     renderer.circlesDrawn++
 
@@ -132,7 +134,9 @@ class GLSurfaceView(
                 val intersect = renderer.drawingCircleIntersectsLevelMap()
 
                 if (!intersect) {
-                    renderer.drawingCircle?.let { renderer.addCircle(it) }
+                    renderer.drawingCircle?.let {
+                        renderer.addCircle(it, renderer.drawingCircleTextureId)
+                    }
                 }
 
                 renderer.drawingCircle = null

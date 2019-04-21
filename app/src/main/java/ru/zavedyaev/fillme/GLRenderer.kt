@@ -1,5 +1,6 @@
 package ru.zavedyaev.fillme
 
+import android.content.Context
 import android.opengl.GLES31
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
@@ -11,8 +12,12 @@ import ru.zavedyaev.fillme.primitive.Point2D
 import ru.zavedyaev.fillme.shader.Shader
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import android.opengl.GLES20
+import ru.zavedyaev.fillme.primitive.Quadrilateral
+import ru.zavedyaev.fillme.shader.TextureHelper
 
 class GLRenderer(
+    private val context: Context,
     private val displayRotation: Int,
     levelPackId: Int,
     levelId: Int
@@ -48,14 +53,21 @@ class GLRenderer(
     private var displayMinPixels: Int = 0
 
     private val circles = ArrayList<Circle2D>()
-    fun addCircle(circle: Circle2D) {
+    private val circlesTextureIds = ArrayList<Int>()
+    fun addCircle(circle: Circle2D, textureId: Int) {
         synchronized(circles) {
             circles.add(circle)
+            circlesTextureIds.add(textureId)
         }
     }
 
     var circlesDrawn: Int = 0
     var drawingCircle: Circle2D? = null
+    var drawingCircleTextureId: Int = 2
+
+    private lateinit var circleTextureDataHandlers: List<Int>
+    private var borderTextureDataHandle: Int = -1
+    private var paperTextureDataHandle: Int = -1
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         // Set the background frame color
@@ -70,7 +82,10 @@ class GLRenderer(
         val vertexShader: Int = GLRenderer.loadShader(GLES31.GL_VERTEX_SHADER, Shader.vertexShaderCode)
         val fragmentShader: Int = GLRenderer.loadShader(GLES31.GL_FRAGMENT_SHADER, Shader.fragmentShaderCode)
 
-        programHandle = createAndLinkProgram(vertexShader, fragmentShader)
+        programHandle = createAndLinkProgram(vertexShader, fragmentShader, listOf("aPosition", "aColor", "aTexCoordinate"))
+        circleTextureDataHandlers = TextureHelper.loadAllCircleTextures(context)
+        borderTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.texture_white)
+        paperTextureDataHandle =  TextureHelper.loadTexture(context, R.drawable.texture_paper)
     }
 
     override fun onDrawFrame(unused: GL10) {
@@ -92,20 +107,51 @@ class GLRenderer(
 
         GLES31.glUseProgram(programHandle)
 
-        val positionHandle = GLES31.glGetAttribLocation(programHandle, "vPosition")
-        val colorHandle = GLES31.glGetUniformLocation(programHandle, "vColor")
+        val positionHandle = GLES31.glGetAttribLocation(programHandle, "aPosition")
+        val colorHandle = GLES31.glGetAttribLocation(programHandle, "aColor")
+        val textureCoordinateHandle = GLES31.glGetAttribLocation(programHandle, "aTexCoordinate")
+
         val vpMatrixHandle = GLES31.glGetUniformLocation(programHandle, "uMVPMatrix")
+        val textureUniformHandle = GLES31.glGetUniformLocation(programHandle, "uTexture")
+
+        // Set the active texture unit to texture unit 0.
+        GLES31.glActiveTexture(GLES31.GL_TEXTURE0)
+        // Bind the texture to this unit.
+        GLES31.glBindTexture(GLES31.GL_TEXTURE_2D, paperTextureDataHandle)
+
+        GLES31.glActiveTexture(GLES31.GL_TEXTURE1)
+        GLES31.glBindTexture(GLES31.GL_TEXTURE_2D, borderTextureDataHandle)
+
+        val firstCircleTextureId = GLES31.GL_TEXTURE2
+        circleTextureDataHandlers.forEachIndexed { index, circleTextureDataHandle ->
+            GLES31.glActiveTexture(firstCircleTextureId + index)
+            GLES31.glBindTexture(GLES31.GL_TEXTURE_2D, circleTextureDataHandle)
+        }
+
 
         // Pass the projection and view transformation to the shader
         GLES31.glUniformMatrix4fv(vpMatrixHandle, 1, false, rotatedMatrix, 0)
 
-        synchronized(circles) {
-            circles.forEach { it.draw(positionHandle, colorHandle, floatArrayOf(1f, 0f, 0f, 1f)) }
-        }
-        Border2D.draw(positionHandle, colorHandle, floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f))
-        level.draw(positionHandle, colorHandle, floatArrayOf(0f, 0f, 1f, 1.0f))
+        GLES31.glUniform1i(textureUniformHandle, 0)
+        Quadrilateral(Point2D(-13.5f, 21f), Point2D(-13.5f, -21f), Point2D(13.5f, -21f), Point2D(13.5f, 21f)).draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f), floatArrayOf(1f, 1f, 1f, 1f))
 
-        drawingCircle?.draw(positionHandle, colorHandle, floatArrayOf(1f, 0f, 0f, 1f))
+        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
+
+        synchronized(circles) {
+            circles.forEachIndexed { index, circle ->
+                GLES31.glUniform1i(textureUniformHandle, 2 + circlesTextureIds[index])
+                circle.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f))
+            }
+        }
+        GLES31.glUniform1i(textureUniformHandle, 1)
+        Border2D.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f))
+        GLES31.glUniform1i(textureUniformHandle, 0)
+        level.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(0f, 0f, 1f, 1.0f))
+
+        drawingCircle?.let {
+            GLES31.glUniform1i(textureUniformHandle, 2 + drawingCircleTextureId)
+            it.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f))
+        }
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
@@ -351,13 +397,17 @@ class GLRenderer(
             }
         }
 
-        fun createAndLinkProgram(vertexShader: Int, fragmentShader: Int): Int {
+        fun createAndLinkProgram(vertexShader: Int, fragmentShader: Int, attributes: List<String>): Int {
             return GLES31.glCreateProgram().also {
                 // add the vertex shader to program
                 GLES31.glAttachShader(it, vertexShader)
 
                 // add the fragment shader to program
                 GLES31.glAttachShader(it, fragmentShader)
+
+                for (i in 0 until attributes.size) {
+                    GLES20.glBindAttribLocation(it, i, attributes[i])
+                }
 
                 // creates OpenGL ES program executables
                 GLES31.glLinkProgram(it)
