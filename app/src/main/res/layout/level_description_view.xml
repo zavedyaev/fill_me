@@ -8,13 +8,13 @@
                   android:orientation="horizontal">
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/levelRating1"
                 android:numStars="1"
                 android:isIndicator="true"
                 android:rating="1"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="top"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -25,9 +25,9 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_square_black"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"/>
 
@@ -41,9 +41,9 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_circle_black"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:paddingStart="16dp"
                 android:paddingEnd="4dp"/>
 
@@ -60,13 +60,13 @@
                   android:layout_height="wrap_content"
                   android:orientation="horizontal">
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/levelRating2"
                 android:numStars="1"
                 android:isIndicator="true"
                 android:rating="1"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="top"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -77,9 +77,9 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_square_black"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"/>
 
@@ -93,9 +93,9 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_circle_black"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:paddingStart="16dp"
                 android:paddingEnd="4dp"/>
 
@@ -112,13 +112,13 @@
                   android:layout_height="wrap_content"
                   android:orientation="horizontal">
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/levelRating3"
                 android:numStars="1"
                 android:isIndicator="true"
                 android:rating="0"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="top"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -129,9 +129,9 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_square_black"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"/>
 
@@ -145,9 +145,9 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_circle_black"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:paddingStart="16dp"
                 android:paddingEnd="4dp"/>
 

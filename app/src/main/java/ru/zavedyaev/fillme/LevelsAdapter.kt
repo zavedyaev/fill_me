@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
@@ -52,8 +53,8 @@ class LevelsAdapter(
         val level = LevelsPacks.packs[levelPack]!!.levels[position]!!
         when (viewTypeEnum) {
             ViewType.UNLOCKED -> {
-                //todo level icon
-                //holder.itemView.findViewById(R.id.levelIcon)
+                holder.itemView.findViewById<ImageView>(R.id.levelIcon).setImageResource(levelIcons[position])
+
                 val rating = ProgressInstance.getLevelStatus(levelPack, position).starsCount
                 holder.itemView.findViewById<MaterialRatingBar>(R.id.levelRating).rating = rating.toFloat()
                 holder.itemView.setOnClickListener {
@@ -110,6 +111,18 @@ class LevelsAdapter(
 
         holder.itemView.findViewById<TextView>(R.id.levelName).text =
                 holder.itemView.resources.getString(R.string.level_name, position)
+    }
+
+    companion object {
+        val levelIcons = listOf(
+            R.drawable.level_0,
+            R.drawable.level_1,
+            R.drawable.level_2,
+            R.drawable.level_3,
+            R.drawable.level_4,
+            R.drawable.level_5,
+            R.drawable.level_6
+        )
     }
 }
 

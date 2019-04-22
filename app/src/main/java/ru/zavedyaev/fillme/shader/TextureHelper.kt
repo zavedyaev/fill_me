@@ -76,6 +76,21 @@ object TextureHelper {
         R.drawable.texture_circle_29
     )
 
+    val backgroundColors = listOf(
+        floatArrayOf(0.3764706f, 0.39607844f, 1.0f ,1f),
+        floatArrayOf(0.5372549f, 0.9764706f, 1.0f ,1f),
+        floatArrayOf(0.42352942f, 1.0f, 0.827451f ,1f),
+        floatArrayOf(0.5803922f, 1.0f, 0.61960787f ,1f),
+        floatArrayOf(0.84313726f, 1.0f, 0.59607846f ,1f),
+        floatArrayOf(1.0f, 0.91764706f, 0.6039216f ,1f),
+        floatArrayOf(1.0f, 0.6627451f, 0.5647059f ,1f),
+        floatArrayOf(1.0f, 0.5372549f, 0.7882353f ,1f),
+        floatArrayOf(0.85882354f, 0.54509807f, 1.0f ,1f),
+        floatArrayOf(0.7058824f, 0.54509807f, 1.0f ,1f),
+        floatArrayOf(0.5647059f, 0.5137255f, 1.0f ,1f)
+    )
+
     private val random = Random()
     fun getRandomCircleTextureId() = random.nextInt(circleTextures.size)
+    fun getRandomBackgroundId() = random.nextInt(backgroundColors.size)
 }

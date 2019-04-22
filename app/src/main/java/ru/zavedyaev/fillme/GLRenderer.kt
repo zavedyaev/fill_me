@@ -68,6 +68,7 @@ class GLRenderer(
     private lateinit var circleTextureDataHandlers: List<Int>
     private var borderTextureDataHandle: Int = -1
     private var paperTextureDataHandle: Int = -1
+    private val backgroundColor = TextureHelper.backgroundColors[TextureHelper.getRandomBackgroundId()]
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         // Set the background frame color
@@ -143,10 +144,12 @@ class GLRenderer(
                 circle.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f))
             }
         }
+
         GLES31.glUniform1i(textureUniformHandle, 1)
         Border2D.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f))
+
         GLES31.glUniform1i(textureUniformHandle, 0)
-        level.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(0f, 0f, 1f, 1.0f))
+        level.draw(positionHandle, colorHandle, textureCoordinateHandle, backgroundColor)
 
         drawingCircle?.let {
             GLES31.glUniform1i(textureUniformHandle, 2 + drawingCircleTextureId)
