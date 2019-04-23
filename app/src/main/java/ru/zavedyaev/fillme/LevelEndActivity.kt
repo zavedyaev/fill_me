@@ -2,13 +2,20 @@ package ru.zavedyaev.fillme
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import ru.zavedyaev.fillme.level.LevelsPacks
 import ru.zavedyaev.fillme.level.ProgressInstance
 
 class LevelEndActivity : AppCompatActivity() {
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,12 +23,22 @@ class LevelEndActivity : AppCompatActivity() {
 
         val levelPackId = intent.getIntExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, 0)
         val levelId = intent.getIntExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
+        val levelEndStatus = LevelEndStatus.valueOf(intent.getStringExtra(GameActivity.LEVEL_END_STATUS_EXTRA_NAME))
 
         val levelPack = LevelsPacks.packs[levelPackId]!!
         val winConditions = levelPack.levels[levelId]!!.winConditions
         val status = ProgressInstance.getLevelStatus(levelPackId, levelId)
 
-        findViewById<TextView>(R.id.levelName).text = resources.getString(R.string.level_name, levelId)
+        val title = when (levelEndStatus) {
+            LevelEndStatus.PAUSE -> resources.getString(R.string.level_name_pause, levelId)
+            LevelEndStatus.WON_1, LevelEndStatus.WON_2, LevelEndStatus.WON_3 -> resources.getString(R.string.level_name_won, levelId)
+            LevelEndStatus.LOST -> resources.getString(R.string.level_name_lost, levelId)
+        }
+
+        findViewById<LinearLayout>(R.id.levelEndMainLayout).setOnClickListener { this.onBackPressed() }
+        findViewById<MaterialCardView>(R.id.levelEndCardView).setOnClickListener { }
+
+        findViewById<TextView>(R.id.levelName).text = title
 
         LevelDescriptionHelper.fillDescription(
             { id: Int -> findViewById(id) },
@@ -73,5 +90,8 @@ class LevelEndActivity : AppCompatActivity() {
             startActivity(i)
         }
     }
+}
 
+enum class LevelEndStatus {
+    PAUSE, WON_1, WON_2, WON_3, LOST
 }

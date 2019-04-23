@@ -18,7 +18,7 @@ class GLSurfaceView(
     private val squareTextView: TextView,
     private val levelPackId: Int,
     private val levelId: Int,
-    private val showLevelEndActivity: () -> Unit
+    private val showLevelEndActivity: (LevelEndStatus) -> Unit
 ) : GLSurfaceView(context) {
 
     private val renderer: GLRenderer
@@ -156,8 +156,23 @@ class GLSurfaceView(
                 )
                 requestRender()
 
-                if (getCurrentStarsCount(circlesSquare) == 3 || renderer.circlesDrawn >= winCondition.maxCirclesCount) {
-                    showLevelEndActivity()
+                if (getCurrentStarsCount(circlesSquare) == 3) {
+                    showLevelEndActivity(LevelEndStatus.WON_3)
+                    return true
+                }
+
+                if (renderer.circlesDrawn >= winCondition.maxCirclesCount) {
+                    if (getCurrentStarsCount(circlesSquare) == 2) {
+                        showLevelEndActivity(LevelEndStatus.WON_2)
+                        return true
+                    }
+                    if (getCurrentStarsCount(circlesSquare) == 1) {
+                        showLevelEndActivity(LevelEndStatus.WON_1)
+                        return true
+                    }
+
+                    showLevelEndActivity(LevelEndStatus.LOST)
+                    return true
                 }
 
                 return true

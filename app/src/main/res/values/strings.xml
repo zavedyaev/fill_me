@@ -6,6 +6,10 @@
 
     <string name="filled_square">%1$d/%2$d%%</string>
     <string name="level_name">Level %1$d</string>
+    <string name="level_name_pause">Level %1$d - Pause</string>
+    <string name="level_name_won">Level %1$d - You Won</string>
+    <string name="level_name_lost">Level %1$d - You Lost</string>
+
     <string name="min_percentage">≥ %1$d%%</string>
     <string name="max_circles_count">≤ %1$d</string>
     <string name="level_select">Level Select</string>

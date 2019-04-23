@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+<com.google.android.material.card.MaterialCardView
+        android:id="@+id/levelCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center">
 
     <LinearLayout
             android:layout_width="wrap_content"
@@ -13,7 +19,7 @@
             android:orientation="vertical"
             android:layout_marginBottom="8dp">
         <ImageView
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
@@ -56,18 +62,18 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="4dp">
                 <ImageButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:scaleType="fitCenter"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="center"
                         android:src="@drawable/ic_expand_more"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/expand_button"
                         android:layout_gravity="end"
                         android:id="@+id/expandMoreButton"/>
                 <ImageButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:scaleType="fitCenter"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="center"
                         android:src="@drawable/ic_expand_less"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/expand_button"
@@ -92,3 +98,4 @@
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

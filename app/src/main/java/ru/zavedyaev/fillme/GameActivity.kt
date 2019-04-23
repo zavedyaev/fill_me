@@ -22,11 +22,13 @@ class GameActivity : AppCompatActivity() {
         val remainedCirclesCountView = findViewById<TextView>(R.id.circlesTextView)
         val squareTextView = findViewById<TextView>(R.id.squareTextView)
 
-        val showLevelEndActivity = {
+        val showLevelEndActivity = { levelEndStatus: LevelEndStatus ->
             val i = Intent(this, LevelEndActivity::class.java)
             i.putExtra(LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
             i.putExtra(LEVEL_ID_EXTRA_NAME, levelId)
+            i.putExtra(LEVEL_END_STATUS_EXTRA_NAME, levelEndStatus.name)
             startActivity(i)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
         gLView = GLSurfaceView(
@@ -42,7 +44,7 @@ class GameActivity : AppCompatActivity() {
         layout.removeView(layout.findViewById<View>(R.id.GameView))
         layout.addView(gLView, 0)
 
-        findViewById<ImageButton>(R.id.btnMenu).setOnClickListener { showLevelEndActivity() }
+        findViewById<ImageButton>(R.id.btnMenu).setOnClickListener { showLevelEndActivity(LevelEndStatus.PAUSE) }
 
         findViewById<ImageButton>(R.id.restartButton).setOnClickListener {
             val i = Intent(this, GameActivity::class.java)
@@ -65,5 +67,6 @@ class GameActivity : AppCompatActivity() {
     companion object {
         const val LEVEL_PACK_ID_EXTRA_NAME = "LEVEL_PACK_ID"
         const val LEVEL_ID_EXTRA_NAME = "LEVEL_ID"
+        const val LEVEL_END_STATUS_EXTRA_NAME = "LEVEL_END_STATUS"
     }
 }

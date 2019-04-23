@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 import ru.zavedyaev.fillme.level.GameLevel
 import ru.zavedyaev.fillme.level.LevelsPacks
@@ -57,7 +58,7 @@ class LevelsAdapter(
 
                 val rating = ProgressInstance.getLevelStatus(levelPack, position).starsCount
                 holder.itemView.findViewById<MaterialRatingBar>(R.id.levelRating).rating = rating.toFloat()
-                holder.itemView.setOnClickListener {
+                holder.itemView.findViewById<MaterialCardView>(R.id.levelCard).setOnClickListener {
                     val i = Intent(activity, GameActivity::class.java)
                     i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPack)
                     i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, position)

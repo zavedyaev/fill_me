@@ -18,7 +18,7 @@ class LevelSelectActivity : AppCompatActivity() {
 
         val rvLevels = this.findViewById<RecyclerView>(R.id.rvLevels)
         val columnsCount = when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> 2
+            Configuration.ORIENTATION_LANDSCAPE -> if (resources.configuration.screenWidthDp >= 258 * 3) 3 else 2
             else -> 1
         }
         rvLevels.layoutManager = StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL)
