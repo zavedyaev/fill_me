@@ -114,7 +114,7 @@ class GLSurfaceView(
 
                     val point = renderer.transformDisplayCoordinates(x, y)
                     renderer.drawingCircleTextureId = TextureHelper.getRandomCircleTextureId()
-                    renderer.drawingCircle = Circle2D(point, 0.1f)
+                    renderer.drawingCircle = Circle2D(point, MIN_RADIUS)
                     renderer.circlesDrawn++
 
                     val remainedCirclesCount = winCondition.maxCirclesCount - renderer.circlesDrawn
@@ -126,6 +126,8 @@ class GLSurfaceView(
 
                     requestRender()
                     return true
+                } else {
+                    return true //needed to register that ACTION_DOWN was processed and we are listening for ACTION_UP
                 }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
@@ -156,17 +158,18 @@ class GLSurfaceView(
                 )
                 requestRender()
 
-                if (getCurrentStarsCount(circlesSquare) == 3) {
+                val currentStarsCount = getCurrentStarsCount(circlesSquare)
+                if (currentStarsCount == 3) {
                     showLevelEndActivity(LevelEndStatus.WON_3)
                     return true
                 }
 
                 if (renderer.circlesDrawn >= winCondition.maxCirclesCount) {
-                    if (getCurrentStarsCount(circlesSquare) == 2) {
+                    if (currentStarsCount == 2) {
                         showLevelEndActivity(LevelEndStatus.WON_2)
                         return true
                     }
-                    if (getCurrentStarsCount(circlesSquare) == 1) {
+                    if (currentStarsCount == 1) {
                         showLevelEndActivity(LevelEndStatus.WON_1)
                         return true
                     }
@@ -198,10 +201,36 @@ class GLSurfaceView(
 
             renderer.drawingCircle = Circle2D(
                 drawingCircle.center as Point2D,
-                drawingCircle.radius * Math.pow(1.0025, (currentTime - previousTime).toDouble()).toFloat()
+                drawingCircle.radius * Math.pow(getRadiusMultiplier(drawingCircle.radius), (currentTime - previousTime).toDouble()).toFloat()
             )
             previousTime = currentTime
             requestRender()
+        }
+    }
+
+    companion object {
+        private const val MAX_POSSIBLE_RADIUS = 25f
+        private const val MIN_RADIUS = 0.1f
+
+        private const val RADIUS_MULTIPLIER_MAX = 1.0028
+        private const val RADIUS_MULTIPLIER_MIN = 1.0011
+        private const val HUNDRED_PERCENT_MULTIPLIER_CHANGE = RADIUS_MULTIPLIER_MAX - RADIUS_MULTIPLIER_MIN
+
+        private const val MIN_RADIUS_TO_CHANGE_MULTIPLIER = 0f
+        private const val MAX_RADIUS_TO_CHANGE_MULTIPLIER = 3.3f
+        private const val HUNDRED_PERCENT_RADIUS_CHANGE = MAX_RADIUS_TO_CHANGE_MULTIPLIER - MIN_RADIUS_TO_CHANGE_MULTIPLIER
+
+        fun getRadiusMultiplier(radius: Float): Double {
+            if (radius > MAX_POSSIBLE_RADIUS) return 1.0
+            if (radius > MAX_RADIUS_TO_CHANGE_MULTIPLIER) return RADIUS_MULTIPLIER_MIN
+            if (radius < MIN_RADIUS_TO_CHANGE_MULTIPLIER) return RADIUS_MULTIPLIER_MAX
+
+            val currentRadiusValue = radius - MIN_RADIUS_TO_CHANGE_MULTIPLIER
+            val radiusChangeInPercent = currentRadiusValue/HUNDRED_PERCENT_RADIUS_CHANGE
+
+            val multiplierChange = HUNDRED_PERCENT_MULTIPLIER_CHANGE * radiusChangeInPercent
+
+            return RADIUS_MULTIPLIER_MAX - multiplierChange
         }
     }
 }
