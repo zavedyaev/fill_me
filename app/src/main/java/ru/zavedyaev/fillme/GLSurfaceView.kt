@@ -15,7 +15,8 @@ import java.util.*
 class GLSurfaceView(
     context: Context,
     private val remainedCirclesCountView: TextView,
-    private val squareTextView: TextView,
+    private val currentSquareTextView: TextView,
+    private val requiredSquareTextView: TextView,
     private val levelPackId: Int,
     private val levelId: Int,
     private val showLevelEndActivity: (LevelEndStatus) -> Unit
@@ -53,11 +54,8 @@ class GLSurfaceView(
 
         remainedCirclesCountView.text =
                 (winCondition.maxCirclesCount - renderer.circlesDrawn).toString()
-        squareTextView.text = resources.getString(
-            R.string.filled_square,
-            0,
-            Math.round(winCondition.minSquare * 100)
-        )
+        currentSquareTextView.text = resources.getString(R.string.filled_square_1, 0)
+        requiredSquareTextView.text = resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
     }
 
     private fun getCurrentWinCondition(): WinCondition {
@@ -151,11 +149,9 @@ class GLSurfaceView(
                 updateStatusIfNeeded(circlesSquare)
                 winCondition = getCurrentWinCondition()
 
-                squareTextView.text = resources.getString(
-                    R.string.filled_square,
-                    Math.round(circlesSquare * 100),
-                    Math.round(winCondition.minSquare * 100)
-                )
+                currentSquareTextView.text = resources.getString(R.string.filled_square_1, Math.round(circlesSquare * 100))
+                requiredSquareTextView.text = resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
+
                 requestRender()
 
                 val currentStarsCount = getCurrentStarsCount(circlesSquare)

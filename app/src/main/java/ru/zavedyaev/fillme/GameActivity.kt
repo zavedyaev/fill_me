@@ -20,7 +20,8 @@ class GameActivity : AppCompatActivity() {
         val levelId = intent.getIntExtra(LEVEL_ID_EXTRA_NAME, 0)
 
         val remainedCirclesCountView = findViewById<TextView>(R.id.circlesTextView)
-        val squareTextView = findViewById<TextView>(R.id.squareTextView)
+        val currentSquareTextView = findViewById<TextView>(R.id.currentSquareTextView)
+        val requiredSquareTextView = findViewById<TextView>(R.id.requiredSquareTextView)
 
         val showLevelEndActivity = { levelEndStatus: LevelEndStatus ->
             val i = Intent(this, LevelEndActivity::class.java)
@@ -34,7 +35,8 @@ class GameActivity : AppCompatActivity() {
         gLView = GLSurfaceView(
             this,
             remainedCirclesCountView,
-            squareTextView,
+            currentSquareTextView,
+            requiredSquareTextView,
             levelPackId,
             levelId,
             showLevelEndActivity

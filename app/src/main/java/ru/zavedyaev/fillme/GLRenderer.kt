@@ -12,7 +12,6 @@ import ru.zavedyaev.fillme.primitive.Point2D
 import ru.zavedyaev.fillme.shader.Shader
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-import android.opengl.GLES20
 import ru.zavedyaev.fillme.primitive.Quadrilateral
 import ru.zavedyaev.fillme.shader.TextureHelper
 
@@ -34,9 +33,7 @@ class GLRenderer(
     private val rotationMatrix = FloatArray(16)
 
     private fun calcRotateSceneDegrees(displayRotation: Int) = when (displayRotation) {
-        Surface.ROTATION_270 -> 90f
-        Surface.ROTATION_180 -> 180f
-        Surface.ROTATION_90 -> -90f
+        Surface.ROTATION_270, Surface.ROTATION_90 -> -90f
         else -> 0f
     }
 
@@ -72,12 +69,9 @@ class GLRenderer(
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         // Set the background frame color
-//        GLES31.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         GLES31.glClearColor(1f, 1f, 1f, 1.0f)
 
         // Set the camera position (View matrix)
-//        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, -3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
-//        Matrix.setLookAtM(viewMatrix, 0, 4.5f, 7f, 3f, 4.5f, 7f, 0f, 0f, 1.0f, 0.0f)
         Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, 3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
 
         val vertexShader: Int = GLRenderer.loadShader(GLES31.GL_VERTEX_SHADER, Shader.vertexShaderCode)
@@ -210,15 +204,7 @@ class GLRenderer(
         val rotatedY: Float
 
         when (displayRotation) {
-            Surface.ROTATION_270 -> {
-                rotatedX = y
-                rotatedY = x
-            }
-            Surface.ROTATION_180 -> {
-                rotatedX = displayWidthPixels - x
-                rotatedY = y
-            }
-            Surface.ROTATION_90 -> {
+            Surface.ROTATION_270, Surface.ROTATION_90 -> {
                 rotatedX = displayHeightPixels - y
                 rotatedY = displayWidthPixels - x
             }
@@ -250,7 +236,7 @@ class GLRenderer(
             val differenceHalf = difference / 2
 
             fixedX = ((rotatedX - differenceHalf) / pixelsPerSceneUnit) - (SCENE_WIDTH.toFloat() / 2)
-            fixedY = (rotatedY / pixelsPerSceneUnit) - -(SCENE_LENGTH.toFloat() / 2)
+            fixedY = (rotatedY / pixelsPerSceneUnit) - (SCENE_LENGTH.toFloat() / 2)
         }
 
         return Point2D(fixedX, fixedY)
@@ -409,7 +395,7 @@ class GLRenderer(
                 GLES31.glAttachShader(it, fragmentShader)
 
                 for (i in 0 until attributes.size) {
-                    GLES20.glBindAttribLocation(it, i, attributes[i])
+                    GLES31.glBindAttribLocation(it, i, attributes[i])
                 }
 
                 // creates OpenGL ES program executables
