@@ -137,6 +137,7 @@ class GLSurfaceView(
                     previousTime = Date().time
 
                     val point = renderer.transformDisplayCoordinates(x, y)
+                    renderer.drawingCircleFailed = renderer.drawingCircleIntersectsLevelMap()
                     renderer.drawingCircleTextureId = TextureHelper.getRandomCircleTextureId()
                     renderer.drawingCircle = Circle2D(point, MIN_RADIUS)
                     renderer.circlesDrawn++
@@ -166,6 +167,7 @@ class GLSurfaceView(
                 }
 
                 renderer.drawingCircle = null
+                renderer.drawingCircleFailed = false
 
                 previousX = null
                 previousY = null
@@ -213,12 +215,15 @@ class GLSurfaceView(
 
     private var increaseThread: Thread? = null
     private val increaseRadiusRunnable = {
+        var remainedStepsToCheckIntersection = CHECK_INTERSECTION_STEP
         while (true) {
             try {
                 Thread.sleep(30)
             } catch (e: InterruptedException) {
                 break
             }
+
+            remainedStepsToCheckIntersection--
 
             val currentTime = Date().time
             val drawingCircle = renderer.drawingCircle ?: continue
@@ -230,6 +235,12 @@ class GLSurfaceView(
                     (currentTime - previousTime).toDouble()
                 ).toFloat()
             )
+
+            if (remainedStepsToCheckIntersection <= 0) {
+                remainedStepsToCheckIntersection = CHECK_INTERSECTION_STEP
+                renderer.drawingCircleFailed = renderer.drawingCircleIntersectsLevelMap()
+            }
+
             previousTime = currentTime
             requestRender()
         }
@@ -247,6 +258,8 @@ class GLSurfaceView(
         private const val MAX_RADIUS_TO_CHANGE_MULTIPLIER = 3.3f
         private const val HUNDRED_PERCENT_RADIUS_CHANGE =
             MAX_RADIUS_TO_CHANGE_MULTIPLIER - MIN_RADIUS_TO_CHANGE_MULTIPLIER
+
+        private const val CHECK_INTERSECTION_STEP = 5
 
         fun getRadiusMultiplier(radius: Float): Double {
             if (radius > MAX_POSSIBLE_RADIUS) return 1.0

@@ -67,9 +67,11 @@ class GLRenderer(
     }
 
     var drawingCircle: Circle2D? = null
-    var drawingCircleTextureId: Int = 2
+    var drawingCircleFailed: Boolean = false
+    var drawingCircleTextureId: Int = 3
 
     private lateinit var circleTextureDataHandlers: List<Int>
+    private var failedCircleTextureDataHandle: Int = -1
     private var borderTextureDataHandle: Int = -1
     private var paperTextureDataHandle: Int = -1
     private val backgroundColor: FloatArray = TextureHelper.backgroundColors[backgroundColorId]
@@ -87,6 +89,7 @@ class GLRenderer(
         programHandle =
                 createAndLinkProgram(vertexShader, fragmentShader, listOf("aPosition", "aColor", "aTexCoordinate"))
         circleTextureDataHandlers = TextureHelper.loadAllCircleTextures(context)
+        failedCircleTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.texture_circle_failed)
         borderTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.texture_white)
         paperTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.texture_paper)
     }
@@ -125,7 +128,10 @@ class GLRenderer(
         GLES31.glActiveTexture(GLES31.GL_TEXTURE1)
         GLES31.glBindTexture(GLES31.GL_TEXTURE_2D, borderTextureDataHandle)
 
-        val firstCircleTextureId = GLES31.GL_TEXTURE2
+        GLES31.glActiveTexture(GLES31.GL_TEXTURE2)
+        GLES31.glBindTexture(GLES31.GL_TEXTURE_2D, failedCircleTextureDataHandle)
+
+        val firstCircleTextureId = GLES31.GL_TEXTURE3
         circleTextureDataHandlers.forEachIndexed { index, circleTextureDataHandle ->
             GLES31.glActiveTexture(firstCircleTextureId + index)
             GLES31.glBindTexture(GLES31.GL_TEXTURE_2D, circleTextureDataHandle)
@@ -148,7 +154,7 @@ class GLRenderer(
 
         synchronized(circles) {
             circles.forEachIndexed { index, circle ->
-                GLES31.glUniform1i(textureUniformHandle, 2 + circlesTextureIds[index])
+                GLES31.glUniform1i(textureUniformHandle, 3 + circlesTextureIds[index])
                 circle.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f))
             }
         }
@@ -160,7 +166,8 @@ class GLRenderer(
         level.draw(positionHandle, colorHandle, textureCoordinateHandle, backgroundColor)
 
         drawingCircle?.let {
-            GLES31.glUniform1i(textureUniformHandle, 2 + drawingCircleTextureId)
+            val textureId = if (drawingCircleFailed) 2 else 3 + drawingCircleTextureId
+            GLES31.glUniform1i(textureUniformHandle, textureId)
             it.draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f))
         }
     }
