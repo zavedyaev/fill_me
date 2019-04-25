@@ -9,17 +9,19 @@ import ru.zavedyaev.fillme.level.Border2D
 import ru.zavedyaev.fillme.level.LevelsPacks
 import ru.zavedyaev.fillme.primitive.Circle2D
 import ru.zavedyaev.fillme.primitive.Point2D
+import ru.zavedyaev.fillme.primitive.Quadrilateral
 import ru.zavedyaev.fillme.shader.Shader
+import ru.zavedyaev.fillme.shader.TextureHelper
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-import ru.zavedyaev.fillme.primitive.Quadrilateral
-import ru.zavedyaev.fillme.shader.TextureHelper
 
 class GLRenderer(
     private val context: Context,
     private val displayRotation: Int,
     levelPackId: Int,
-    levelId: Int
+    levelId: Int,
+    backgroundColorId: Int,
+    var circlesDrawn: Int
 ) : GLSurfaceView.Renderer {
 
     val level = LevelsPacks.packs[levelPackId]!!.levels[levelId]!!
@@ -58,14 +60,19 @@ class GLRenderer(
         }
     }
 
-    var circlesDrawn: Int = 0
+    fun getCirclesWithColors(): GameState {
+        synchronized(circles) {
+            return GameState(ArrayList<Circle2D>(circles), ArrayList<Int>(circlesTextureIds), circlesDrawn)
+        }
+    }
+
     var drawingCircle: Circle2D? = null
     var drawingCircleTextureId: Int = 2
 
     private lateinit var circleTextureDataHandlers: List<Int>
     private var borderTextureDataHandle: Int = -1
     private var paperTextureDataHandle: Int = -1
-    private val backgroundColor = TextureHelper.backgroundColors[TextureHelper.getRandomBackgroundId()]
+    private val backgroundColor: FloatArray = TextureHelper.backgroundColors[backgroundColorId]
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         // Set the background frame color
@@ -77,10 +84,11 @@ class GLRenderer(
         val vertexShader: Int = GLRenderer.loadShader(GLES31.GL_VERTEX_SHADER, Shader.vertexShaderCode)
         val fragmentShader: Int = GLRenderer.loadShader(GLES31.GL_FRAGMENT_SHADER, Shader.fragmentShaderCode)
 
-        programHandle = createAndLinkProgram(vertexShader, fragmentShader, listOf("aPosition", "aColor", "aTexCoordinate"))
+        programHandle =
+                createAndLinkProgram(vertexShader, fragmentShader, listOf("aPosition", "aColor", "aTexCoordinate"))
         circleTextureDataHandlers = TextureHelper.loadAllCircleTextures(context)
         borderTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.texture_white)
-        paperTextureDataHandle =  TextureHelper.loadTexture(context, R.drawable.texture_paper)
+        paperTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.texture_paper)
     }
 
     override fun onDrawFrame(unused: GL10) {
@@ -128,7 +136,13 @@ class GLRenderer(
         GLES31.glUniformMatrix4fv(vpMatrixHandle, 1, false, rotatedMatrix, 0)
 
         GLES31.glUniform1i(textureUniformHandle, 0)
-        Quadrilateral(Point2D(-13.5f, 21f), Point2D(-13.5f, -21f), Point2D(13.5f, -21f), Point2D(13.5f, 21f)).draw(positionHandle, colorHandle, textureCoordinateHandle, floatArrayOf(1f, 1f, 1f, 1f), floatArrayOf(1f, 1f, 1f, 1f))
+        Quadrilateral(Point2D(-13.5f, 21f), Point2D(-13.5f, -21f), Point2D(13.5f, -21f), Point2D(13.5f, 21f)).draw(
+            positionHandle,
+            colorHandle,
+            textureCoordinateHandle,
+            floatArrayOf(1f, 1f, 1f, 1f),
+            floatArrayOf(1f, 1f, 1f, 1f)
+        )
 
         // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
 
@@ -406,3 +420,9 @@ class GLRenderer(
 
     }
 }
+
+data class GameState(
+    val circles: List<Circle2D>,
+    val colorIds: List<Int>,
+    val circlesDrawn: Int
+)

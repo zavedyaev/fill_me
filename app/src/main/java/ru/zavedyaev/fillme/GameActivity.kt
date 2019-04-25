@@ -7,10 +7,13 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import ru.zavedyaev.fillme.shader.TextureHelper
 
 class GameActivity : AppCompatActivity() {
 
     private lateinit var gLView: GLSurfaceView
+    private var backgroundColorId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,8 @@ class GameActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
+        backgroundColorId = savedInstanceState?.getInt(STATE_BACKGROUND_ID_KEY) ?: TextureHelper.getRandomBackgroundId()
+
         gLView = GLSurfaceView(
             this,
             remainedCirclesCountView,
@@ -39,8 +44,15 @@ class GameActivity : AppCompatActivity() {
             requiredSquareTextView,
             levelPackId,
             levelId,
+            backgroundColorId,
             showLevelEndActivity
         )
+
+        if (savedInstanceState != null) {
+            val serialized = savedInstanceState.getString(STATE_CIRCLES_KEY)
+            val circles = mapper.readValue(serialized, GameState::class.java)
+            gLView.setCirclesWithColors(circles)
+        }
 
         val layout: RelativeLayout = findViewById(R.id.GameLayout)
         layout.removeView(layout.findViewById<View>(R.id.GameView))
@@ -54,6 +66,14 @@ class GameActivity : AppCompatActivity() {
             i.putExtra(LEVEL_ID_EXTRA_NAME, levelId)
             startActivity(i)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt(STATE_BACKGROUND_ID_KEY, backgroundColorId)
+        val serializedCircles = mapper.writeValueAsString(gLView.getCirclesWithColors())
+        outState.putString(STATE_CIRCLES_KEY, serializedCircles)
     }
 
     override fun onResume() {
@@ -70,5 +90,10 @@ class GameActivity : AppCompatActivity() {
         const val LEVEL_PACK_ID_EXTRA_NAME = "LEVEL_PACK_ID"
         const val LEVEL_ID_EXTRA_NAME = "LEVEL_ID"
         const val LEVEL_END_STATUS_EXTRA_NAME = "LEVEL_END_STATUS"
+
+        const val STATE_BACKGROUND_ID_KEY = "STATE_BACKGROUND_ID_KEY"
+        const val STATE_CIRCLES_KEY = "STATE_CIRCLES_KEY"
+
+        val mapper = jacksonObjectMapper()
     }
 }

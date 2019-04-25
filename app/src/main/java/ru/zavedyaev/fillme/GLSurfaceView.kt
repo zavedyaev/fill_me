@@ -19,6 +19,7 @@ class GLSurfaceView(
     private val requiredSquareTextView: TextView,
     private val levelPackId: Int,
     private val levelId: Int,
+    backgroundColorId: Int,
     private val showLevelEndActivity: (LevelEndStatus) -> Unit
 ) : GLSurfaceView(context) {
 
@@ -37,7 +38,7 @@ class GLSurfaceView(
 
         val defaultDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val rotation = defaultDisplay.rotation
-        renderer = GLRenderer(context, rotation, levelPackId, levelId)
+        renderer = GLRenderer(context, rotation, levelPackId, levelId, backgroundColorId, 0)
 
         // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(renderer)
@@ -55,7 +56,32 @@ class GLSurfaceView(
         remainedCirclesCountView.text =
                 (winCondition.maxCirclesCount - renderer.circlesDrawn).toString()
         currentSquareTextView.text = resources.getString(R.string.filled_square_1, 0)
-        requiredSquareTextView.text = resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
+        requiredSquareTextView.text =
+                resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
+    }
+
+
+    fun getCirclesWithColors(): GameState = renderer.getCirclesWithColors()
+    fun setCirclesWithColors(input: GameState) {
+        if (input.circles.isEmpty()) return
+        input.circles.forEachIndexed { index, circle ->
+            renderer.addCircle(circle, input.colorIds[index])
+        }
+
+        renderer.circlesDrawn = input.circlesDrawn
+        val remainedCirclesCount = winCondition.maxCirclesCount - renderer.circlesDrawn
+        remainedCirclesCountView.text = (remainedCirclesCount).toString()
+
+        val circlesSquare = renderer.calculateCirclesSquare()
+
+        updateStatusIfNeeded(circlesSquare)
+        winCondition = getCurrentWinCondition()
+
+        currentSquareTextView.text = resources.getString(R.string.filled_square_1, Math.round(circlesSquare * 100))
+        requiredSquareTextView.text =
+                resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
+
+        requestRender()
     }
 
     private fun getCurrentWinCondition(): WinCondition {
@@ -149,8 +175,10 @@ class GLSurfaceView(
                 updateStatusIfNeeded(circlesSquare)
                 winCondition = getCurrentWinCondition()
 
-                currentSquareTextView.text = resources.getString(R.string.filled_square_1, Math.round(circlesSquare * 100))
-                requiredSquareTextView.text = resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
+                currentSquareTextView.text =
+                        resources.getString(R.string.filled_square_1, Math.round(circlesSquare * 100))
+                requiredSquareTextView.text =
+                        resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
 
                 requestRender()
 
@@ -197,7 +225,10 @@ class GLSurfaceView(
 
             renderer.drawingCircle = Circle2D(
                 drawingCircle.center as Point2D,
-                drawingCircle.radius * Math.pow(getRadiusMultiplier(drawingCircle.radius), (currentTime - previousTime).toDouble()).toFloat()
+                drawingCircle.radius * Math.pow(
+                    getRadiusMultiplier(drawingCircle.radius),
+                    (currentTime - previousTime).toDouble()
+                ).toFloat()
             )
             previousTime = currentTime
             requestRender()
@@ -214,7 +245,8 @@ class GLSurfaceView(
 
         private const val MIN_RADIUS_TO_CHANGE_MULTIPLIER = 0f
         private const val MAX_RADIUS_TO_CHANGE_MULTIPLIER = 3.3f
-        private const val HUNDRED_PERCENT_RADIUS_CHANGE = MAX_RADIUS_TO_CHANGE_MULTIPLIER - MIN_RADIUS_TO_CHANGE_MULTIPLIER
+        private const val HUNDRED_PERCENT_RADIUS_CHANGE =
+            MAX_RADIUS_TO_CHANGE_MULTIPLIER - MIN_RADIUS_TO_CHANGE_MULTIPLIER
 
         fun getRadiusMultiplier(radius: Float): Double {
             if (radius > MAX_POSSIBLE_RADIUS) return 1.0
@@ -222,7 +254,7 @@ class GLSurfaceView(
             if (radius < MIN_RADIUS_TO_CHANGE_MULTIPLIER) return RADIUS_MULTIPLIER_MAX
 
             val currentRadiusValue = radius - MIN_RADIUS_TO_CHANGE_MULTIPLIER
-            val radiusChangeInPercent = currentRadiusValue/HUNDRED_PERCENT_RADIUS_CHANGE
+            val radiusChangeInPercent = currentRadiusValue / HUNDRED_PERCENT_RADIUS_CHANGE
 
             val multiplierChange = HUNDRED_PERCENT_MULTIPLIER_CHANGE * radiusChangeInPercent
 
