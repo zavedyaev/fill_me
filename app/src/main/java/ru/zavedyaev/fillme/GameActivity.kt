@@ -6,11 +6,10 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import ru.zavedyaev.fillme.shader.TextureHelper
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : BackgroundSoundActivity() {
 
     private lateinit var gLView: GLSurfaceView
     private var backgroundColorId = 0

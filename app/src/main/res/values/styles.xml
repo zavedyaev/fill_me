@@ -53,4 +53,10 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="SwitchButton" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:fontFamily">@font/font_rubik_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="colorControlActivated">#6800E4</item>
+    </style>
+
 </resources>

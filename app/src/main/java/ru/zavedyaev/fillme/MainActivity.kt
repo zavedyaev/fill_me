@@ -3,11 +3,10 @@ package ru.zavedyaev.fillme
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import ru.zavedyaev.fillme.level.ProgressInstance
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BackgroundSoundActivity() {
     private lateinit var newGameButton: MaterialButton
     private lateinit var continueGameButton: MaterialButton
     private lateinit var levelSelectButton: MaterialButton

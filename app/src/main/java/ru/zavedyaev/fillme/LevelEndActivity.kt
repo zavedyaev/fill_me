@@ -4,13 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import ru.zavedyaev.fillme.level.LevelsPacks
 import ru.zavedyaev.fillme.level.ProgressInstance
 
-class LevelEndActivity : AppCompatActivity() {
+class LevelEndActivity : BackgroundSoundActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()

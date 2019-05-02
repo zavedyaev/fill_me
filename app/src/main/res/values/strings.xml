@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Fill Me!</string>
+    <string name="preference_file_key">preference_file</string>
 
     <string name="title_activity_level_select">Level Select</string>
     <string name="title_activity_settings">Settings</string>
@@ -27,4 +28,6 @@
     <string name="maximum_circles_count">Maximum circles count</string>
     <string name="stars_required">%1$d/%2$d</string>
     <string name="expand_button">Expand Button</string>
+    <string name="background_music">Background Music</string>
+    <string name="sounds">Sounds</string>
 </resources>
