@@ -63,5 +63,12 @@
                 android:text="@string/settings"
                 android:id="@+id/settingsButton"
                 style="@style/TextButton"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+                android:id="@+id/aboutButton"
+                style="@style/TextButton"/>
     </LinearLayout>
 </LinearLayout>

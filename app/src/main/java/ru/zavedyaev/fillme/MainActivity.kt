@@ -11,6 +11,7 @@ class MainActivity : BackgroundSoundActivity() {
     private lateinit var continueGameButton: MaterialButton
     private lateinit var levelSelectButton: MaterialButton
     private lateinit var settingsButton: MaterialButton
+    private lateinit var aboutButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +21,7 @@ class MainActivity : BackgroundSoundActivity() {
         continueGameButton = findViewById(R.id.continueButton)
         levelSelectButton = findViewById(R.id.levelSelectButton)
         settingsButton = findViewById(R.id.settingsButton)
+        aboutButton = findViewById(R.id.aboutButton)
 
         newGameButton.setOnClickListener {
             playButtonSound()
@@ -39,6 +41,13 @@ class MainActivity : BackgroundSoundActivity() {
             playButtonSound()
             val i = Intent(this, SettingsActivity::class.java)
             startActivity(i)
+        }
+
+        aboutButton.setOnClickListener {
+            playButtonSound()
+            val i = Intent(this, AboutActivity::class.java)
+            startActivity(i)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 

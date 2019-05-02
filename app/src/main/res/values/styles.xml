@@ -16,9 +16,12 @@
         <item name="android:windowBackground">@color/transparentActivityBackground</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowFullscreen">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.TransparentBackgroundFullscreen" parent="AppTheme.TransparentBackground">
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- CardView theme. -->
