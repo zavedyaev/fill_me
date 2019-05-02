@@ -44,7 +44,13 @@ class GameActivity : BackgroundSoundActivity() {
             levelPackId,
             levelId,
             backgroundColorId,
-            showLevelEndActivity
+            showLevelEndActivity,
+            playCircleDrawSound,
+            stopCircleDrawSound,
+            playCircleFailedSound,
+            playCircleSuccessSound,
+            playLooseSound,
+            playWinSound
         )
 
         if (savedInstanceState != null) {
@@ -57,9 +63,13 @@ class GameActivity : BackgroundSoundActivity() {
         layout.removeView(layout.findViewById<View>(R.id.GameView))
         layout.addView(gLView, 0)
 
-        findViewById<ImageButton>(R.id.btnMenu).setOnClickListener { showLevelEndActivity(LevelEndStatus.PAUSE) }
+        findViewById<ImageButton>(R.id.btnMenu).setOnClickListener {
+            playButtonSound()
+            showLevelEndActivity(LevelEndStatus.PAUSE)
+        }
 
         findViewById<ImageButton>(R.id.restartButton).setOnClickListener {
+            playButtonSound()
             val i = Intent(this, GameActivity::class.java)
             i.putExtra(LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
             i.putExtra(LEVEL_ID_EXTRA_NAME, levelId)
@@ -84,6 +94,19 @@ class GameActivity : BackgroundSoundActivity() {
         super.onPause()
         gLView.onPause()
     }
+
+    private fun sendSoundCommand(command: SoundServiceCommand) {
+        val serviceIntent = Intent(this, SoundService::class.java)
+        serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, command.name)
+        startService(serviceIntent)
+    }
+
+    private val playCircleDrawSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_CIRCLE_DRAW) }
+    private val stopCircleDrawSound = { sendSoundCommand(SoundServiceCommand.STOP_SOUND_CIRCLE_DRAW) }
+    private val playCircleFailedSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_CIRCLE_FAILED) }
+    private val playCircleSuccessSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_CIRCLE_SUCCESS) }
+    private val playLooseSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_LOOSE) }
+    private val playWinSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_WIN) }
 
     companion object {
         const val LEVEL_PACK_ID_EXTRA_NAME = "LEVEL_PACK_ID"

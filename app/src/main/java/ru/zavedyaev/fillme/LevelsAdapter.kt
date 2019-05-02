@@ -17,7 +17,8 @@ import ru.zavedyaev.fillme.level.ProgressInstance
 
 class LevelsAdapter(
     private val activity: LevelSelectActivity,
-    private val levels: List<GameLevel>
+    private val levels: List<GameLevel>,
+    private val playButtonSound: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val expandedLevels = HashSet<Int>()
@@ -59,6 +60,7 @@ class LevelsAdapter(
                 val rating = ProgressInstance.getLevelStatus(levelPack, position).starsCount
                 holder.itemView.findViewById<MaterialRatingBar>(R.id.levelRating).rating = rating.toFloat()
                 holder.itemView.findViewById<MaterialCardView>(R.id.levelCard).setOnClickListener {
+                    playButtonSound()
                     val i = Intent(activity, GameActivity::class.java)
                     i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPack)
                     i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, position)
@@ -80,6 +82,7 @@ class LevelsAdapter(
                 }
 
                 expandMoreButton.setOnClickListener {
+                    playButtonSound()
                     expandedLevels.add(position)
                     expandMoreButton.visibility = View.GONE
                     expandLessButton.visibility = View.VISIBLE
@@ -88,6 +91,7 @@ class LevelsAdapter(
                 }
 
                 expandLessButton.setOnClickListener {
+                    playButtonSound()
                     expandedLevels.remove(position)
                     expandMoreButton.visibility = View.VISIBLE
                     expandLessButton.visibility = View.GONE

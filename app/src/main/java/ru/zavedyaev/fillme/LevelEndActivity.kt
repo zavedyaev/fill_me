@@ -30,11 +30,17 @@ class LevelEndActivity : BackgroundSoundActivity() {
 
         val title = when (levelEndStatus) {
             LevelEndStatus.PAUSE -> resources.getString(R.string.level_name_pause, levelId)
-            LevelEndStatus.WON_1, LevelEndStatus.WON_2, LevelEndStatus.WON_3 -> resources.getString(R.string.level_name_won, levelId)
+            LevelEndStatus.WON_1, LevelEndStatus.WON_2, LevelEndStatus.WON_3 -> resources.getString(
+                R.string.level_name_won,
+                levelId
+            )
             LevelEndStatus.LOST -> resources.getString(R.string.level_name_lost, levelId)
         }
 
-        findViewById<LinearLayout>(R.id.levelEndMainLayout).setOnClickListener { this.onBackPressed() }
+        findViewById<LinearLayout>(R.id.levelEndMainLayout).setOnClickListener {
+            playButtonSound()
+            this.onBackPressed()
+        }
         findViewById<MaterialCardView>(R.id.levelEndCardView).setOnClickListener { }
 
         findViewById<TextView>(R.id.levelName).text = title
@@ -48,6 +54,7 @@ class LevelEndActivity : BackgroundSoundActivity() {
         )
 
         findViewById<MaterialButton>(R.id.restartButton).setOnClickListener {
+            playButtonSound()
             val i = Intent(this, GameActivity::class.java)
             i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
             i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, levelId)
@@ -60,6 +67,7 @@ class LevelEndActivity : BackgroundSoundActivity() {
             val nextLevel = LevelsPacks.packs[levelPackId]!!.levels[levelId + 1]!!
             if (nextLevel.starsToUnlock <= starsCount) {
                 nextLevelButton.setOnClickListener {
+                    playButtonSound()
                     val i = Intent(this, GameActivity::class.java)
                     i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId)
                     i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, levelId + 1)
@@ -72,6 +80,7 @@ class LevelEndActivity : BackgroundSoundActivity() {
             val nextLevel = LevelsPacks.packs[levelPackId + 1]!!.levels[0]!!
             if (nextLevel.starsToUnlock <= starsCount) {
                 nextLevelButton.setOnClickListener {
+                    playButtonSound()
                     val i = Intent(this, GameActivity::class.java)
                     i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, levelPackId + 1)
                     i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
@@ -85,6 +94,7 @@ class LevelEndActivity : BackgroundSoundActivity() {
         }
 
         findViewById<MaterialButton>(R.id.levelSelectButton).setOnClickListener {
+            playButtonSound()
             val i = Intent(this, LevelSelectActivity::class.java)
             startActivity(i)
         }

@@ -20,7 +20,14 @@ class GLSurfaceView(
     private val levelPackId: Int,
     private val levelId: Int,
     backgroundColorId: Int,
-    private val showLevelEndActivity: (LevelEndStatus) -> Unit
+    private val showLevelEndActivity: (LevelEndStatus) -> Unit,
+
+    private val playCircleDrawSound: () -> Unit,
+    private val stopCircleDrawSound: () -> Unit,
+    private val playCircleFailedSound: () -> Unit,
+    private val playCircleSuccessSound: () -> Unit,
+    private val playLooseSound: () -> Unit,
+    private val playWinSound: () -> Unit
 ) : GLSurfaceView(context) {
 
     private val renderer: GLRenderer
@@ -132,6 +139,8 @@ class GLSurfaceView(
         when (e.action) {
             MotionEvent.ACTION_DOWN -> {
                 if (previousX == null && previousY == null && renderer.circlesDrawn < winCondition.maxCirclesCount) {
+                    playCircleDrawSound()
+
                     previousX = x
                     previousY = y
                     previousTime = Date().time
@@ -157,6 +166,7 @@ class GLSurfaceView(
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 increaseThread?.interrupt()
+                stopCircleDrawSound()
 
                 val intersect = renderer.drawingCircleIntersectsLevelMap()
 
@@ -186,22 +196,32 @@ class GLSurfaceView(
 
                 val currentStarsCount = getCurrentStarsCount(circlesSquare)
                 if (currentStarsCount == 3) {
+                    playWinSound()
                     showLevelEndActivity(LevelEndStatus.WON_3)
                     return true
                 }
 
                 if (renderer.circlesDrawn >= winCondition.maxCirclesCount) {
                     if (currentStarsCount == 2) {
+                        playWinSound()
                         showLevelEndActivity(LevelEndStatus.WON_2)
                         return true
                     }
                     if (currentStarsCount == 1) {
+                        playWinSound()
                         showLevelEndActivity(LevelEndStatus.WON_1)
                         return true
                     }
 
+                    playLooseSound()
                     showLevelEndActivity(LevelEndStatus.LOST)
                     return true
+                }
+
+                if (!intersect) { //play these sounds only in case level is not finished
+                    playCircleSuccessSound()
+                } else {
+                    playCircleFailedSound()
                 }
 
                 return true

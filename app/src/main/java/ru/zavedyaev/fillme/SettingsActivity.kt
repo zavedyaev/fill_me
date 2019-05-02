@@ -27,6 +27,7 @@ class SettingsActivity : BackgroundSoundActivity() {
 
         resetProgressButton = findViewById(R.id.resetProgressButton)
         resetProgressButton.setOnClickListener {
+            playButtonSound()
             ProgressInstance.resetProgress(this)
             Snackbar.make(findViewById(R.id.root), R.string.progress_erased, Snackbar.LENGTH_SHORT).show()
         }
@@ -34,30 +35,41 @@ class SettingsActivity : BackgroundSoundActivity() {
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
         backgroundMusicSwitch = findViewById(R.id.backgroundMusicSwitch)
-        backgroundMusicSwitch.isChecked = sharedPreferences.getFloat(SharedPreferencesKey.BACKGROUND_MUSIC_VOLUME.name, 1f) == 1f
+        backgroundMusicSwitch.isChecked = sharedPreferences.getFloat(
+            SharedPreferencesKey.BACKGROUND_MUSIC_VOLUME.name,
+            1f
+        ) == 1f
         backgroundMusicSwitch.setOnClickListener {
+            playButtonSound()
             val checked = backgroundMusicSwitch.isChecked
-            with (sharedPreferences.edit()) {
-                putFloat(SharedPreferencesKey.BACKGROUND_MUSIC_VOLUME.name, if (checked) 1f else 0f )
+            with(sharedPreferences.edit()) {
+                putFloat(SharedPreferencesKey.BACKGROUND_MUSIC_VOLUME.name, if (checked) 1f else 0f)
                 apply()
             }
 
             val serviceIntent = Intent(this, SoundService::class.java)
-            serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, (if (checked) SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_1 else SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_0).name)
+            serviceIntent.putExtra(
+                SoundService.COMMAND_EXTRA_NAME,
+                (if (checked) SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_1 else SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_0).name
+            )
             startService(serviceIntent)
         }
 
         soundsSwitch = findViewById(R.id.soundsSwitch)
         soundsSwitch.isChecked = sharedPreferences.getFloat(SharedPreferencesKey.SOUND_VOLUME.name, 1f) == 1f
         soundsSwitch.setOnClickListener {
+            playButtonSound()
             val checked = soundsSwitch.isChecked
-            with (sharedPreferences.edit()) {
-                putFloat(SharedPreferencesKey.SOUND_VOLUME.name, if (checked) 1f else 0f )
+            with(sharedPreferences.edit()) {
+                putFloat(SharedPreferencesKey.SOUND_VOLUME.name, if (checked) 1f else 0f)
                 apply()
             }
 
             val serviceIntent = Intent(this, SoundService::class.java)
-            serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, (if (checked) SoundServiceCommand.SOUND_VOLUME_1 else SoundServiceCommand.SOUND_VOLUME_0).name)
+            serviceIntent.putExtra(
+                SoundService.COMMAND_EXTRA_NAME,
+                (if (checked) SoundServiceCommand.SOUND_VOLUME_1 else SoundServiceCommand.SOUND_VOLUME_0).name
+            )
             startService(serviceIntent)
         }
     }
@@ -66,6 +78,7 @@ class SettingsActivity : BackgroundSoundActivity() {
         //return to main activity
         return when (item?.itemId) {
             android.R.id.home -> {
+                playButtonSound()
                 val i = Intent(this, MainActivity::class.java)
                 startActivity(i)
                 true

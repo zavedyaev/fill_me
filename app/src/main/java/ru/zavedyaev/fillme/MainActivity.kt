@@ -22,6 +22,7 @@ class MainActivity : BackgroundSoundActivity() {
         settingsButton = findViewById(R.id.settingsButton)
 
         newGameButton.setOnClickListener {
+            playButtonSound()
             val i = Intent(this, GameActivity::class.java)
             i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, 0)
             i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
@@ -29,11 +30,13 @@ class MainActivity : BackgroundSoundActivity() {
         }
 
         levelSelectButton.setOnClickListener {
+            playButtonSound()
             val i = Intent(this, LevelSelectActivity::class.java)
             startActivity(i)
         }
 
         settingsButton.setOnClickListener {
+            playButtonSound()
             val i = Intent(this, SettingsActivity::class.java)
             startActivity(i)
         }

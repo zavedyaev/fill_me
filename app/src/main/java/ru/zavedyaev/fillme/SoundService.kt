@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
+import android.util.Log
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.atomic.AtomicInteger
@@ -15,6 +16,13 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 class SoundService : Service() {
     private var backgroundMusic: MediaPlayer? = null
+    private lateinit var buttonSound: MediaPlayer
+    private lateinit var circleDrawSound: MediaPlayer
+    private lateinit var circleFailedSound: MediaPlayer
+    private lateinit var circleSuccessSound: MediaPlayer
+    private lateinit var looseSound: MediaPlayer
+    private lateinit var winSound: MediaPlayer
+
     private var backgroundMusicVolume = 1f
     private var soundVolume = 1f
     /** 0 means active, 1 means on pause */
@@ -27,6 +35,15 @@ class SoundService : Service() {
         val pref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         backgroundMusicVolume = pref.getFloat(SharedPreferencesKey.BACKGROUND_MUSIC_VOLUME.name, 1f)
         soundVolume = pref.getFloat(SharedPreferencesKey.SOUND_VOLUME.name, 1f)
+
+        buttonSound = MediaPlayer.create(this@SoundService, R.raw.button)
+        circleDrawSound = MediaPlayer.create(this@SoundService, R.raw.circle_draw)
+        circleFailedSound = MediaPlayer.create(this@SoundService, R.raw.failed_circle)
+        circleSuccessSound = MediaPlayer.create(this@SoundService, R.raw.success_circle)
+        looseSound = MediaPlayer.create(this@SoundService, R.raw.loose)
+        winSound = MediaPlayer.create(this@SoundService, R.raw.win)
+
+        updateSoundVolume()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -35,13 +52,11 @@ class SoundService : Service() {
 
         when (command) {
             SoundServiceCommand.PAUSE -> {
-                val incremented = pauseCounter.incrementAndGet()
-                println("!!! ${this.hashCode()} PAUSE $incremented")
+                pauseCounter.incrementAndGet()
                 backgroundMusicControlExecutorService.submit(afterPauseOrResumeSingleThreadRunnable)
             }
             SoundServiceCommand.RESUME -> {
-                val decremented = pauseCounter.decrementAndGet()
-                println("!!! ${this.hashCode()} RESUME $decremented")
+                pauseCounter.decrementAndGet()
                 backgroundMusicControlExecutorService.submit(afterPauseOrResumeSingleThreadRunnable)
             }
             SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_0 -> {
@@ -54,17 +69,38 @@ class SoundService : Service() {
             }
             SoundServiceCommand.SOUND_VOLUME_0 -> {
                 soundVolume = 0f
-                //todo setup all
+                updateSoundVolume()
             }
             SoundServiceCommand.SOUND_VOLUME_1 -> {
                 soundVolume = 1f
-                //todo setup all
+                updateSoundVolume()
             }
-            SoundServiceCommand.PLAY_SOUND_X -> TODO()
-            else -> TODO()
+            SoundServiceCommand.PLAY_SOUND_BUTTON -> buttonSound.start()
+
+            SoundServiceCommand.PLAY_SOUND_CIRCLE_DRAW -> circleDrawSound.start()
+            SoundServiceCommand.STOP_SOUND_CIRCLE_DRAW -> {
+                circleDrawSound.pause(); circleDrawSound.seekTo(0)
+            }
+
+            SoundServiceCommand.PLAY_SOUND_CIRCLE_FAILED -> circleFailedSound.start()
+            SoundServiceCommand.PLAY_SOUND_CIRCLE_SUCCESS -> circleSuccessSound.start()
+            SoundServiceCommand.PLAY_SOUND_LOOSE -> looseSound.start()
+            SoundServiceCommand.PLAY_SOUND_WIN -> winSound.start()
+
+            else -> Log.w("SoundService", "Unexpected SoundService command: $commandStr")
         }
 
         return Service.START_STICKY
+    }
+
+    private fun getSoundPlayers(): List<MediaPlayer> {
+        return listOf(buttonSound, circleDrawSound, circleFailedSound, circleSuccessSound, looseSound, winSound)
+    }
+
+    private fun updateSoundVolume() {
+        getSoundPlayers().forEach {
+            it.setVolume(soundVolume, soundVolume)
+        }
     }
 
     private val afterPauseOrResumeSingleThreadRunnable = {
@@ -107,6 +143,11 @@ class SoundService : Service() {
         backgroundMusic?.stop()
         backgroundMusic?.release()
         backgroundMusic = null
+
+        getSoundPlayers().forEach { soundPlayer ->
+            soundPlayer.stop()
+            soundPlayer.release()
+        }
     }
 
     companion object {
@@ -122,7 +163,15 @@ enum class SoundServiceCommand {
     BACKGROUND_MUSIC_VOLUME_1,
     SOUND_VOLUME_0,
     SOUND_VOLUME_1,
-    PLAY_SOUND_X
+    PLAY_SOUND_BUTTON,
+
+    PLAY_SOUND_CIRCLE_DRAW,
+    STOP_SOUND_CIRCLE_DRAW,
+
+    PLAY_SOUND_CIRCLE_FAILED,
+    PLAY_SOUND_CIRCLE_SUCCESS,
+    PLAY_SOUND_LOOSE,
+    PLAY_SOUND_WIN
 }
 
 enum class SharedPreferencesKey {

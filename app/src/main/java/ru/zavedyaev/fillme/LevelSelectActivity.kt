@@ -21,7 +21,7 @@ class LevelSelectActivity : BackgroundSoundActivity() {
             else -> 1
         }
         rvLevels.layoutManager = StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL)
-        rvLevels.adapter = LevelsAdapter(this, LevelsPacks.packs[0]!!.levels.values.toList())
+        rvLevels.adapter = LevelsAdapter(this, LevelsPacks.packs[0]!!.levels.values.toList(), this::playButtonSound)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -31,6 +31,7 @@ class LevelSelectActivity : BackgroundSoundActivity() {
         //return to main activity
         return when (item?.itemId) {
             android.R.id.home -> {
+                playButtonSound()
                 val i = Intent(this, MainActivity::class.java)
                 startActivity(i)
                 true
