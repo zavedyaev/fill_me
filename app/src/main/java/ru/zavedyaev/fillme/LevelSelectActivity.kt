@@ -32,12 +32,16 @@ class LevelSelectActivity : BackgroundSoundActivity() {
         return when (item?.itemId) {
             android.R.id.home -> {
                 playButtonSound()
-                val i = Intent(this, MainActivity::class.java)
-                startActivity(i)
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    override fun onBackPressed() {
+        val i = Intent(this, MainActivity::class.java)
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(i)
+    }
 }

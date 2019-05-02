@@ -77,6 +77,12 @@ class GameActivity : BackgroundSoundActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val i = Intent(this, LevelSelectActivity::class.java)
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(i)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 

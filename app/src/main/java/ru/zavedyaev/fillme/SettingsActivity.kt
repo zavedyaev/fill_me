@@ -79,8 +79,7 @@ class SettingsActivity : BackgroundSoundActivity() {
         return when (item?.itemId) {
             android.R.id.home -> {
                 playButtonSound()
-                val i = Intent(this, MainActivity::class.java)
-                startActivity(i)
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
