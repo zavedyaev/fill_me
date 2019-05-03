@@ -4,6 +4,10 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="android:textViewStyle">@font/font_work_sans</item>
         <item name="fontFamily">@font/font_work_sans</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
@@ -33,6 +37,7 @@
     <style name="CardViewBody" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:fontFamily">@font/font_work_sans</item>
         <item name="android:textSize">17sp</item>
+        <item name="android:textColorLink">@color/colorAccent</item>
     </style>
     <style name="CardViewMetadata" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:fontFamily">@font/font_work_sans</item>
@@ -59,7 +64,6 @@
     <style name="SwitchButton" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="android:fontFamily">@font/font_rubik_medium</item>
         <item name="android:textSize">16sp</item>
-        <item name="colorControlActivated">#6800E4</item>
     </style>
 
 </resources>
