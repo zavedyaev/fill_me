@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Заполни Все!</string>
+
+    <string name="title_activity_level_select">Выбор Уровня</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_about">О Заполни Все!</string>
+
+    <string name="filled_square_1">%1$d/</string>
+    <string name="filled_square_2">%1$d</string>
+
+    <string name="level_name">Уровень %1$d</string>
+    <string name="level_name_pause">Уровень %1$d - Пауза</string>
+    <string name="level_name_won">Уровень %1$d - Пройден</string>
+    <string name="level_name_lost">Уровень %1$d - Неудача</string>
+
+    <string name="min_percentage">≥ %1$d%%</string>
+    <string name="max_circles_count">≤ %1$d</string>
+    <string name="level_select">Выбор Уровня</string>
+    <string name="level_select_short">Все Уровни</string>
+    <string name="restart">Заново</string>
+    <string name="next_level">Дальше</string>
+
+    <string name="reset_progress">Сбросить Прогресс</string>
+    <string name="progress_erased">Прогресс успешно сброшен</string>
+    <string name="background_music">Фоновая Музыка</string>
+    <string name="sounds">Звуковые Эффекты</string>
+
+    <string name="text_logo_part_1">Заполни</string>
+    <string name="text_logo_part_2">Все!</string>
+    <string name="new_game">Новая Игра</string>
+    <string name="continue_game">Продолжить</string>
+    <string name="settings">Настройки</string>
+    <string name="about">Об Игре</string>
+
+    <string name="minimum_square_percentage">Минимальный процент площади</string>
+    <string name="maximum_circles_count">Максимальное количество кругов</string>
+    <string name="stars_required">%1$d/%2$d</string>
+    <string name="expand_button">Кнопка "расширить"</string>
+
+    <string name="version">Версия: %1$s</string>
+    <string name="source_code">Исходный Код: <a href="https://github.com/zavedyaev/fill_me">GitHub</a></string>
+    <string name="about_design">Дизайн / Разработка: <a href="http://zavedyaev.ru">В.Заведяев</a></string>
+    <string name="about_music">Музыка / Звуки: <a href="https://vk.com/iprogger">Е.Владимиров</a></string>
+    <string name="feedback">Обратная Связь</string>
+    <string name="rate_or_share">Оценить</string>
+
+    <string name="feedback_email_title">Заполни Все! Обратная Связь</string>
+    <string name="feedback_email_body">Введите свое сообщение</string>
+    <string name="feedback_email_intent_title">Отправить обратную связь</string>
+</resources>
