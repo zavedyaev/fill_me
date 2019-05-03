@@ -23,7 +23,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_level_1"
+                    android:src="@drawable/level_0"
                     android:id="@+id/levelIcon"/>
 
             <LinearLayout
