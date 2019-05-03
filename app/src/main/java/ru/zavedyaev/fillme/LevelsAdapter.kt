@@ -126,7 +126,20 @@ class LevelsAdapter(
             R.drawable.level_3,
             R.drawable.level_4,
             R.drawable.level_5,
-            R.drawable.level_6
+            R.drawable.level_6,
+            R.drawable.level_7,
+            R.drawable.level_8,
+            R.drawable.level_9,
+            R.drawable.level_10,
+            R.drawable.level_11,
+            R.drawable.level_12,
+            R.drawable.level_13,
+            R.drawable.level_14,
+            R.drawable.level_15,
+            R.drawable.level_16,
+            R.drawable.level_17,
+            R.drawable.level_18,
+            R.drawable.level_19
         )
     }
 }

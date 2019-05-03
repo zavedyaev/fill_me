@@ -16,10 +16,11 @@
     <string name="min_percentage">≥ %1$d%%</string>
     <string name="max_circles_count">≤ %1$d</string>
     <string name="level_select">Level Select</string>
+    <string name="level_select_short">Levels List</string>
     <string name="restart">Restart</string>
     <string name="reset_progress">Reset Progress</string>
     <string name="progress_erased">Progress has been reset</string>
-    <string name="next_level">Next Level</string>
+    <string name="next_level">Next</string>
     <string name="new_game">New Game</string>
     <string name="continue_game">Continue</string>
     <string name="settings">Settings</string>
