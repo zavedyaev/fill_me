@@ -16,11 +16,10 @@ class LevelSelectActivity : BackgroundSoundActivity() {
         setContentView(R.layout.activity_level_select)
 
         val rvLevels = this.findViewById<RecyclerView>(R.id.rvLevels)
-        val columnsCount = when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> if (resources.configuration.screenWidthDp >= 258 * 3) 3 else 2
-            else -> 1
-        }
-        rvLevels.layoutManager = StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL)
+        val columnsCount = resources.configuration.screenWidthDp / 258
+        val fixedColumnsCount = if (columnsCount == 0) 1 else columnsCount
+
+        rvLevels.layoutManager = StaggeredGridLayoutManager(fixedColumnsCount, StaggeredGridLayoutManager.VERTICAL)
         rvLevels.adapter = LevelsAdapter(this, LevelsPacks.packs[0]!!.levels.values.toList(), this::playButtonSound)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)

@@ -51,6 +51,7 @@
                             android:text="@string/source_code"
                             android:layout_width="wrap_content"
                             android:textAppearance="@style/CardViewBody"
+                            android:textColorLink="#6800E4"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"/>
 
@@ -61,6 +62,7 @@
                             android:layout_width="wrap_content"
                             android:textAppearance="@style/CardViewBody"
                             android:layout_height="wrap_content"
+                            android:textColorLink="#6800E4"
                             android:layout_marginBottom="2dp"/>
 
                     <TextView
@@ -68,6 +70,7 @@
                             android:text="@string/about_music"
                             android:layout_width="wrap_content"
                             android:textAppearance="@style/CardViewBody"
+                            android:textColorLink="#6800E4"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"/>
 

@@ -27,7 +27,9 @@ class AboutActivity : BackgroundSoundActivity() {
         }
         findViewById<MaterialCardView>(R.id.aboutCardView).setOnClickListener { }
 
-        val version = 1
+        val pInfo = applicationContext.packageManager.getPackageInfo(packageName, 0)
+        val version = pInfo.versionName
+
         findViewById<TextView>(R.id.versionTextView).text = getString(R.string.version, version)
         findViewById<TextView>(R.id.sourceCodeTextView).movementMethod = LinkMovementMethod.getInstance()
         findViewById<TextView>(R.id.designTextView).movementMethod = LinkMovementMethod.getInstance()
