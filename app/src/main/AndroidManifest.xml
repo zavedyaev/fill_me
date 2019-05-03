@@ -51,6 +51,10 @@
                 android:parentActivityName=".GameActivity"
                 android:theme="@style/AppTheme.TransparentBackgroundFullscreen">
         </activity>
+        <activity android:name=".IntroActivity"
+                  android:parentActivityName=".LevelSelectActivity"
+                  android:theme="@style/AppTheme.Intro"/>
+
         <service android:name=".SoundService"/>
     </application>
 

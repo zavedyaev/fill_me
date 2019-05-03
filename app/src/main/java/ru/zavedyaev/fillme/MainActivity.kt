@@ -25,9 +25,7 @@ class MainActivity : BackgroundSoundActivity() {
 
         newGameButton.setOnClickListener {
             playButtonSound()
-            val i = Intent(this, GameActivity::class.java)
-            i.putExtra(GameActivity.LEVEL_PACK_ID_EXTRA_NAME, 0)
-            i.putExtra(GameActivity.LEVEL_ID_EXTRA_NAME, 0)
+            val i = Intent(this, IntroActivity::class.java)
             startActivity(i)
         }
 

@@ -22,6 +22,7 @@
     <string name="restart">Restart</string>
     <string name="next_level">Next</string>
 
+    <string name="intro">Show Intro</string>
     <string name="reset_progress">Reset Progress</string>
     <string name="progress_erased">Progress has been reset</string>
     <string name="background_music">Background Music</string>
@@ -49,4 +50,28 @@
     <string name="feedback_email_title">Fill Me! Feedback</string>
     <string name="feedback_email_body">Enter your message here</string>
     <string name="feedback_email_intent_title">Send Feedback Email</string>
+
+    <string name="onboard_title_2">Welcome!</string>
+    <string name="onboard_body_2">The goal of this game - fill all possible place using a minimum count of circles</string>
+
+    <string name="onboard_title_3">Square</string>
+    <string name="onboard_body_3">On the top status bar, you can see current (70) and minimum required (65) percent of the square. You need to fill more than minimum square percentage to win</string>
+
+    <string name="onboard_title_4">Circles Count</string>
+    <string name="onboard_body_4">You have a limited amount of circles to draw. In case of a failure, you will lose your circle. Use them smartly</string>
+
+    <string name="onboard_title_5">Circle Drawing</string>
+    <string name="onboard_body_5">To draw a circle hold your finger on a center of the circle you want to draw. To stop drawing remove the finger.</string>
+
+    <string name="onboard_title_6">Watch what you drawing</string>
+    <string name="onboard_body_6">When you started drawing you can move your finger away to see the circle clearly.</string>
+
+    <string name="onboard_title_7">Watch for borders</string>
+    <string name="onboard_body_7">Do not intersect level borders, otherwise, you will lose your circle.</string>
+
+    <string name="onboard_title_8">Dashes</string>
+    <string name="onboard_body_8">You can cross dashes by your circle, but we will calculate square using only circle parts inside dashes</string>
+
+    <string name="onboard_title_9">Let\'s Play!</string>
+    <string name="onboard_body_9">Hope you will enjoy the game</string>
 </resources>

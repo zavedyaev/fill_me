@@ -135,12 +135,16 @@ object ProgressInstance {
      */
     private fun readProgress(context: Context) {
         val rootDirectory = context.filesDir
-        if (rootDirectory.listFiles().any { it.name == PROGRESS_FILE_NAME }) {
-            context.openFileInput(PROGRESS_FILE_NAME).use {
-                progress = mapper.readValue(it.readBytes(), Progress::class.java)
+        try {
+            if (rootDirectory.listFiles().any { it.name == PROGRESS_FILE_NAME }) {
+                context.openFileInput(PROGRESS_FILE_NAME).use {
+                    progress = mapper.readValue(it.readBytes(), Progress::class.java)
+                }
+            } else {
+                // there are no progress, create new one
+                progress = Progress(mapOf(0 to LevelPackProgress(mapOf())))
             }
-        } else {
-            // there are no progress, create new one
+        } catch (ex: Throwable) {
             progress = Progress(mapOf(0 to LevelPackProgress(mapOf())))
         }
     }

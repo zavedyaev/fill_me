@@ -14,6 +14,7 @@ import ru.zavedyaev.fillme.level.ProgressInstance
 class SettingsActivity : BackgroundSoundActivity() {
 
     private lateinit var resetProgressButton: MaterialButton
+    private lateinit var introButton: MaterialButton
     private lateinit var backgroundMusicSwitch: SwitchMaterial
     private lateinit var soundsSwitch: SwitchMaterial
     private lateinit var sharedPreferences: SharedPreferences
@@ -30,6 +31,13 @@ class SettingsActivity : BackgroundSoundActivity() {
             playButtonSound()
             ProgressInstance.resetProgress(this)
             Snackbar.make(findViewById(R.id.root), R.string.progress_erased, Snackbar.LENGTH_SHORT).show()
+        }
+
+        introButton = findViewById(R.id.introButton)
+        introButton.setOnClickListener {
+            playButtonSound()
+            val i = Intent(this, IntroActivity::class.java)
+            startActivity(i)
         }
 
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)

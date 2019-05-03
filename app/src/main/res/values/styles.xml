@@ -16,6 +16,10 @@
     <style name="AppTheme.Fullscreen" parent="AppTheme.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
+    <style name="AppTheme.Intro" parent="AppTheme.Fullscreen">
+        <item name="android:textViewStyle">@font/font_rubik_medium</item>
+        <item name="fontFamily">@font/font_rubik_medium</item>
+    </style>
     <style name="AppTheme.TransparentBackground" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@color/transparentActivityBackground</item>
         <item name="android:colorBackgroundCacheHint">@null</item>

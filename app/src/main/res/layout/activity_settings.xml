@@ -44,6 +44,12 @@
                 android:text="@string/reset_progress"
                 android:id="@+id/resetProgressButton"
                 style="@style/ContainedButton"/>
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/intro"
+                android:id="@+id/introButton"
+                style="@style/ContainedButton"/>
 
     </LinearLayout>
 </LinearLayout>

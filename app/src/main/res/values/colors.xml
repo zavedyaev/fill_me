@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#7300B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="text_black">#ff000000</color>
     <color name="black_overlay">#66000000</color>
     <color name="transparentActivityBackground">#55000000</color>
 </resources>

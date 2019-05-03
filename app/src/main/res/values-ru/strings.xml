@@ -21,6 +21,7 @@
     <string name="restart">Заново</string>
     <string name="next_level">Дальше</string>
 
+    <string name="intro">Пройти Обучение</string>
     <string name="reset_progress">Сбросить Прогресс</string>
     <string name="progress_erased">Прогресс успешно сброшен</string>
     <string name="background_music">Фоновая Музыка</string>
@@ -48,4 +49,28 @@
     <string name="feedback_email_title">Заполни Все! Обратная Связь</string>
     <string name="feedback_email_body">Введите свое сообщение</string>
     <string name="feedback_email_intent_title">Отправить обратную связь</string>
+
+    <string name="onboard_title_2">Привет!</string>
+    <string name="onboard_body_2">Цель игры - заполнить максимально возможное пространство, используя минимальное количество кругов</string>
+
+    <string name="onboard_title_3">Площадь</string>
+    <string name="onboard_body_3">В верхней строке состояния находится текущий (70) и минимально необходимый (65) процент заполнения площади. Чтобы победить необходимо заполнить хотя бы минимальный процент площади</string>
+
+    <string name="onboard_title_4">Количество Кругов</string>
+    <string name="onboard_body_4">Количество кругов - ограничено. В случае ошибки круг исчезает безвозвратно. Используйте их с умом</string>
+
+    <string name="onboard_title_5">Рисование круга</string>
+    <string name="onboard_body_5">Чтобы нарисовать круг - держите палец в центре будущего круга. Чтобы остановить рост круга - уберите палец</string>
+
+    <string name="onboard_title_6">Следите за процессом</string>
+    <string name="onboard_body_6">После того как вы начали рисовать круг, вы можете двигать свой палец чтобы лучше видеть круг</string>
+
+    <string name="onboard_title_7">Следите за границами</string>
+    <string name="onboard_body_7">Не пересекайте границы, иначе вы потеряете круг</string>
+
+    <string name="onboard_title_8">Пунктирная линия</string>
+    <string name="onboard_body_8">Вы можете пересекать пунктирную линию кругами, но в суммарную площадь будут зачтены только части кругов, находящиеся внутри пунктирной линии</string>
+
+    <string name="onboard_title_9">Давайте Играть!</string>
+    <string name="onboard_body_9">Надеюсь вам понравится</string>
 </resources>
