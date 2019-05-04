@@ -3,6 +3,8 @@ package ru.zavedyaev.fillme.level
 import android.content.Context
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import ru.zavedyaev.fillme.R
+import ru.zavedyaev.fillme.SharedPreferencesKey
 
 object ProgressInstance {
     private lateinit var progress: Progress
@@ -22,9 +24,9 @@ object ProgressInstance {
 
         val startCount = getStarsCount()
 
-        val levelPack = LevelsPacks.packs[lastLevelWithProgressIds.levelPackId]!!
+        val levelPack = LevelsPacks.packs.getValue(lastLevelWithProgressIds.levelPackId)
         if (levelPack.levels.containsKey(lastLevelWithProgressIds.levelId + 1)) {
-            val nextLevel = levelPack.levels[lastLevelWithProgressIds.levelId + 1]!!
+            val nextLevel = levelPack.levels.getValue(lastLevelWithProgressIds.levelId + 1)
             return if (nextLevel.starsToUnlock <= startCount) {
                 LevelPackAndLevelId(lastLevelWithProgressIds.levelPackId, lastLevelWithProgressIds.levelId + 1)
             } else {
@@ -35,8 +37,8 @@ object ProgressInstance {
             }
         } else {
             return if (LevelsPacks.packs.containsKey(lastLevelWithProgressIds.levelPackId + 1)) {
-                val nextLevelPack = LevelsPacks.packs[lastLevelWithProgressIds.levelPackId + 1]!!
-                val nextLevel = nextLevelPack.levels[0]!!
+                val nextLevelPack = LevelsPacks.packs.getValue(lastLevelWithProgressIds.levelPackId + 1)
+                val nextLevel = nextLevelPack.levels.getValue(0)
                 if (nextLevel.starsToUnlock <= startCount) {
                     LevelPackAndLevelId(lastLevelWithProgressIds.levelPackId + 1, 0)
                 } else {
@@ -67,7 +69,7 @@ object ProgressInstance {
 
         var firstCheck = true
         levelPackIds.forEach { levelPackIdIter ->
-            val levelIds = LevelsPacks.packs[levelPackIdIter]!!.levels.keys.sortedDescending()
+            val levelIds = LevelsPacks.packs.getValue(levelPackIdIter).levels.keys.sortedDescending()
             val levelIdsFiltered = if (firstCheck && maxLevelPackId == levelPackId) {
                 levelIds.filter { it < levelId }
             } else {
@@ -77,7 +79,7 @@ object ProgressInstance {
 
             levelIdsFiltered.forEach { levelIdIter ->
                 val levelProgress = getLevelStatus(levelPackIdIter, levelIdIter)
-                val level = LevelsPacks.packs[levelPackIdIter]!!.levels[levelIdIter]!!
+                val level = LevelsPacks.packs.getValue(levelPackIdIter).levels.getValue(levelIdIter)
                 if (levelProgress.starsCount < 3 && level.starsToUnlock <= startCount) {
                     return LevelPackAndLevelId(levelPackIdIter, levelIdIter)
                 }
@@ -118,15 +120,17 @@ object ProgressInstance {
     }
 
     private val mapper = jacksonObjectMapper()
-    private const val PROGRESS_FILE_NAME = "progress.json"
 
     /**
      * Will save progress to filesystem and update variable
      */
     private fun saveProgress(context: Context, updatedProgress: Progress) {
-        context.openFileOutput(PROGRESS_FILE_NAME, Context.MODE_PRIVATE).use {
-            it.write(mapper.writeValueAsBytes(updatedProgress))
+        val pref = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        with(pref.edit()) {
+            putString(SharedPreferencesKey.PROGRESS.name, mapper.writeValueAsString(updatedProgress))
+            apply()
         }
+
         progress = updatedProgress
     }
 
@@ -134,18 +138,12 @@ object ProgressInstance {
      * Will read progress from filesystem and update variable
      */
     private fun readProgress(context: Context) {
-        val rootDirectory = context.filesDir
-        try {
-            if (rootDirectory.listFiles().any { it.name == PROGRESS_FILE_NAME }) {
-                context.openFileInput(PROGRESS_FILE_NAME).use {
-                    progress = mapper.readValue(it.readBytes(), Progress::class.java)
-                }
-            } else {
-                // there are no progress, create new one
-                progress = Progress(mapOf(0 to LevelPackProgress(mapOf())))
-            }
-        } catch (ex: Throwable) {
-            progress = Progress(mapOf(0 to LevelPackProgress(mapOf())))
+        val pref = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val progressStr = pref.getString(SharedPreferencesKey.PROGRESS.name, null)
+        progress = if (progressStr == null) {
+            Progress(mapOf(0 to LevelPackProgress(mapOf())))
+        } else {
+            mapper.readValue(progressStr, Progress::class.java)
         }
     }
 
@@ -171,7 +169,7 @@ data class Progress(
     fun getLastLevelWithProgress(): LevelPackAndLevelId? {
         var lastLevelWithProgressId: Int? = null
         val lastLevelPackWithProgressId = levelPackProgress.keys.asSequence().sortedDescending().find {
-            lastLevelWithProgressId = levelPackProgress[it]!!.getLastLevelWithProgress()
+            lastLevelWithProgressId = levelPackProgress.getValue(it).getLastLevelWithProgress()
             lastLevelWithProgressId != null
         }
         return if (lastLevelPackWithProgressId != null && lastLevelWithProgressId != null) {
@@ -189,7 +187,7 @@ data class LevelPackProgress(
     /** will return the latest level which contains at least 1 star */
     @JsonIgnore
     fun getLastLevelWithProgress(): Int? {
-        return levelProgress.keys.asSequence().sortedDescending().find { levelProgress[it]!!.starsCount > 0 }
+        return levelProgress.keys.asSequence().sortedDescending().find { levelProgress.getValue(it).starsCount > 0 }
     }
 }
 

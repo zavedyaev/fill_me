@@ -2,6 +2,7 @@ package ru.zavedyaev.fillme
 
 import android.content.Context
 import android.opengl.GLSurfaceView
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.WindowManager
@@ -38,6 +39,8 @@ class GLSurfaceView(
     private var previousX: Float? = null
     private var previousY: Float? = null
     private var previousTime: Long = 0
+    private val oldSdk = Build.VERSION.SDK_INT <= 22
+    private val checkIntersectionEveryStep = if (oldSdk) 100 else 5
 
     init {
         // Create an OpenGL ES 3.0 context
@@ -55,7 +58,7 @@ class GLSurfaceView(
         // Render the view only when there is a change in the drawing data
         renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
 
-        level = LevelsPacks.packs[levelPackId]!!.levels[levelId]!!
+        level = LevelsPacks.packs.getValue(levelPackId).levels.getValue(levelId)
         status = ProgressInstance.getLevelStatus(levelPackId, levelId)
         winCondition = getCurrentWinCondition()
 
@@ -235,7 +238,7 @@ class GLSurfaceView(
 
     private var increaseThread: Thread? = null
     private val increaseRadiusRunnable = {
-        var remainedStepsToCheckIntersection = CHECK_INTERSECTION_STEP
+        var remainedStepsToCheckIntersection = checkIntersectionEveryStep
         while (true) {
             try {
                 Thread.sleep(30)
@@ -257,7 +260,7 @@ class GLSurfaceView(
             )
 
             if (remainedStepsToCheckIntersection <= 0) {
-                remainedStepsToCheckIntersection = CHECK_INTERSECTION_STEP
+                remainedStepsToCheckIntersection = checkIntersectionEveryStep
                 renderer.drawingCircleFailed = renderer.drawingCircleIntersectsLevelMap()
             }
 
@@ -278,8 +281,6 @@ class GLSurfaceView(
         private const val MAX_RADIUS_TO_CHANGE_MULTIPLIER = 3.3f
         private const val HUNDRED_PERCENT_RADIUS_CHANGE =
             MAX_RADIUS_TO_CHANGE_MULTIPLIER - MIN_RADIUS_TO_CHANGE_MULTIPLIER
-
-        private const val CHECK_INTERSECTION_STEP = 5
 
         fun getRadiusMultiplier(radius: Float): Double {
             if (radius > MAX_POSSIBLE_RADIUS) return 1.0

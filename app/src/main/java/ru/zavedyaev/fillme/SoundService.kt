@@ -173,8 +173,3 @@ enum class SoundServiceCommand {
     PLAY_SOUND_LOOSE,
     PLAY_SOUND_WIN
 }
-
-enum class SharedPreferencesKey {
-    BACKGROUND_MUSIC_VOLUME,
-    SOUND_VOLUME
-}
