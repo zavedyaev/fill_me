@@ -94,4 +94,9 @@ class SettingsActivity : BackgroundSoundActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        menuBackgroundMusic()
+    }
+
 }

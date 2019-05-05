@@ -23,4 +23,16 @@ abstract class BackgroundSoundActivity : AppCompatActivity() {
         serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, SoundServiceCommand.PLAY_SOUND_BUTTON.name)
         startService(serviceIntent)
     }
+
+    fun mainBackgroundMusic() {
+        val serviceIntent = Intent(this, SoundService::class.java)
+        serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, SoundServiceCommand.MAIN_MUSIC.name)
+        startService(serviceIntent)
+    }
+
+    fun menuBackgroundMusic() {
+        val serviceIntent = Intent(this, SoundService::class.java)
+        serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, SoundServiceCommand.MENU_MUSIC.name)
+        startService(serviceIntent)
+    }
 }

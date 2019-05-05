@@ -50,7 +50,9 @@ class GameActivity : BackgroundSoundActivity() {
             playCircleFailedSound,
             playCircleSuccessSound,
             playLooseSound,
-            playWinSound
+            playWin1Sound,
+            playWin2Sound,
+            playWin3Sound
         )
 
         if (savedInstanceState != null) {
@@ -94,6 +96,7 @@ class GameActivity : BackgroundSoundActivity() {
     override fun onResume() {
         super.onResume()
         gLView.onResume()
+        mainBackgroundMusic()
     }
 
     override fun onPause() {
@@ -112,7 +115,9 @@ class GameActivity : BackgroundSoundActivity() {
     private val playCircleFailedSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_CIRCLE_FAILED) }
     private val playCircleSuccessSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_CIRCLE_SUCCESS) }
     private val playLooseSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_LOOSE) }
-    private val playWinSound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_WIN) }
+    private val playWin1Sound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_WIN_1) }
+    private val playWin2Sound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_WIN_2) }
+    private val playWin3Sound = { sendSoundCommand(SoundServiceCommand.PLAY_SOUND_WIN_3) }
 
     companion object {
         const val LEVEL_PACK_ID_EXTRA_NAME = "LEVEL_PACK_ID"

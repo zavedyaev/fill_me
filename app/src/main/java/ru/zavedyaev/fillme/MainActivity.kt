@@ -72,6 +72,8 @@ class MainActivity : BackgroundSoundActivity() {
                 startActivity(i)
             }
         }
+
+        menuBackgroundMusic()
     }
 
 }

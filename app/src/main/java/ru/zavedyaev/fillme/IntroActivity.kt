@@ -68,6 +68,10 @@ class IntroActivity : OnboarderActivity() {
         val serviceIntent = Intent(this, SoundService::class.java)
         serviceIntent.putExtra(SoundService.COMMAND_EXTRA_NAME, SoundServiceCommand.RESUME.name)
         startService(serviceIntent)
+
+        val serviceIntent2 = Intent(this, SoundService::class.java)
+        serviceIntent2.putExtra(SoundService.COMMAND_EXTRA_NAME, SoundServiceCommand.MENU_MUSIC.name)
+        startService(serviceIntent2)
     }
 
     override fun onPause() {

@@ -15,13 +15,17 @@ import java.util.concurrent.atomic.AtomicInteger
  * In case the last action was onPause and there were no other actions in some period of time this service should be self destroyed.
  */
 class SoundService : Service() {
-    private var backgroundMusic: MediaPlayer? = null
+    private var backgroundMusicType: BackgroundMusicType = BackgroundMusicType.MENU
+    private var backgroundMenuMusic: MediaPlayer? = null
+    private var backgroundMainMusic: MediaPlayer? = null
     private lateinit var buttonSound: MediaPlayer
     private lateinit var circleDrawSound: MediaPlayer
     private lateinit var circleFailedSound: MediaPlayer
     private lateinit var circleSuccessSound: MediaPlayer
     private lateinit var looseSound: MediaPlayer
-    private lateinit var winSound: MediaPlayer
+    private lateinit var win1Sound: MediaPlayer
+    private lateinit var win2Sound: MediaPlayer
+    private lateinit var win3Sound: MediaPlayer
 
     private var backgroundMusicVolume = 1f
     private var soundVolume = 1f
@@ -36,12 +40,14 @@ class SoundService : Service() {
         backgroundMusicVolume = pref.getFloat(SharedPreferencesKey.BACKGROUND_MUSIC_VOLUME.name, 1f)
         soundVolume = pref.getFloat(SharedPreferencesKey.SOUND_VOLUME.name, 1f)
 
-        buttonSound = MediaPlayer.create(this@SoundService, R.raw.button)
-        circleDrawSound = MediaPlayer.create(this@SoundService, R.raw.circle_draw)
-        circleFailedSound = MediaPlayer.create(this@SoundService, R.raw.failed_circle)
-        circleSuccessSound = MediaPlayer.create(this@SoundService, R.raw.success_circle)
-        looseSound = MediaPlayer.create(this@SoundService, R.raw.loose)
-        winSound = MediaPlayer.create(this@SoundService, R.raw.win)
+        buttonSound = MediaPlayer.create(this@SoundService, R.raw.click)
+        circleDrawSound = MediaPlayer.create(this@SoundService, R.raw.circle_inflate)
+        circleFailedSound = MediaPlayer.create(this@SoundService, R.raw.circle_bang)
+        circleSuccessSound = MediaPlayer.create(this@SoundService, R.raw.circle_placed)
+        looseSound = MediaPlayer.create(this@SoundService, R.raw.lose)
+        win1Sound = MediaPlayer.create(this@SoundService, R.raw.win_1_star)
+        win2Sound = MediaPlayer.create(this@SoundService, R.raw.win_2_star)
+        win3Sound = MediaPlayer.create(this@SoundService, R.raw.win_3_star)
 
         updateSoundVolume()
     }
@@ -59,13 +65,22 @@ class SoundService : Service() {
                 pauseCounter.decrementAndGet()
                 backgroundMusicControlExecutorService.submit(afterPauseOrResumeSingleThreadRunnable)
             }
+            SoundServiceCommand.MAIN_MUSIC -> {
+                switchBackgroundMusic(BackgroundMusicType.MAIN)
+            }
+            SoundServiceCommand.MENU_MUSIC -> {
+                switchBackgroundMusic(BackgroundMusicType.MENU)
+            }
+
             SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_0 -> {
                 backgroundMusicVolume = 0f
-                backgroundMusic?.setVolume(backgroundMusicVolume, backgroundMusicVolume)
+                backgroundMenuMusic?.setVolume(backgroundMusicVolume, backgroundMusicVolume)
+                backgroundMainMusic?.setVolume(backgroundMusicVolume, backgroundMusicVolume)
             }
             SoundServiceCommand.BACKGROUND_MUSIC_VOLUME_1 -> {
                 backgroundMusicVolume = 1f
-                backgroundMusic?.setVolume(backgroundMusicVolume, backgroundMusicVolume)
+                backgroundMenuMusic?.setVolume(backgroundMusicVolume, backgroundMusicVolume)
+                backgroundMainMusic?.setVolume(backgroundMusicVolume, backgroundMusicVolume)
             }
             SoundServiceCommand.SOUND_VOLUME_0 -> {
                 soundVolume = 0f
@@ -85,7 +100,9 @@ class SoundService : Service() {
             SoundServiceCommand.PLAY_SOUND_CIRCLE_FAILED -> circleFailedSound.start()
             SoundServiceCommand.PLAY_SOUND_CIRCLE_SUCCESS -> circleSuccessSound.start()
             SoundServiceCommand.PLAY_SOUND_LOOSE -> looseSound.start()
-            SoundServiceCommand.PLAY_SOUND_WIN -> winSound.start()
+            SoundServiceCommand.PLAY_SOUND_WIN_1 -> win1Sound.start()
+            SoundServiceCommand.PLAY_SOUND_WIN_2 -> win2Sound.start()
+            SoundServiceCommand.PLAY_SOUND_WIN_3 -> win3Sound.start()
 
             else -> Log.w("SoundService", "Unexpected SoundService command: $commandStr")
         }
@@ -93,8 +110,44 @@ class SoundService : Service() {
         return Service.START_STICKY
     }
 
+    private fun switchBackgroundMusic(newBackgroundMusicType: BackgroundMusicType) {
+        backgroundMusicType = newBackgroundMusicType
+
+        when(newBackgroundMusicType) {
+            BackgroundMusicType.MAIN -> {
+                val currentBackgroundMenuMusic = backgroundMenuMusic
+                if (currentBackgroundMenuMusic != null) {
+                    if (currentBackgroundMenuMusic.isPlaying) {
+                        currentBackgroundMenuMusic.pause()
+                        currentBackgroundMenuMusic.seekTo(0)
+                    }
+                }
+
+                val currentBackgroundMainMusic = backgroundMainMusic
+                if (currentBackgroundMainMusic != null) {
+                    if (!currentBackgroundMainMusic.isPlaying) currentBackgroundMainMusic.start()
+                }
+            }
+            BackgroundMusicType.MENU -> {
+                val currentBackgroundMainMusic = backgroundMainMusic
+                if (currentBackgroundMainMusic != null) {
+                    if (currentBackgroundMainMusic.isPlaying) {
+                        currentBackgroundMainMusic.pause()
+                        currentBackgroundMainMusic.seekTo(0)
+                    }
+                }
+
+                val currentBackgroundMenuMusic = backgroundMenuMusic
+                if (currentBackgroundMenuMusic != null) {
+                    if (!currentBackgroundMenuMusic.isPlaying) currentBackgroundMenuMusic.start()
+                }
+            }
+        }
+
+    }
+
     private fun getSoundPlayers(): List<MediaPlayer> {
-        return listOf(buttonSound, circleDrawSound, circleFailedSound, circleSuccessSound, looseSound, winSound)
+        return listOf(buttonSound, circleDrawSound, circleFailedSound, circleSuccessSound, looseSound, win1Sound, win2Sound, win3Sound)
     }
 
     private fun updateSoundVolume() {
@@ -125,12 +178,19 @@ class SoundService : Service() {
             if (paused) {
                 stopSelf()
             } else {
-                if (backgroundMusic == null) {
-                    val newBackgroundMusic = MediaPlayer.create(this@SoundService, R.raw.music)
-                    backgroundMusic = newBackgroundMusic
+                if (backgroundMenuMusic == null) {
+                    val newBackgroundMusic = MediaPlayer.create(this@SoundService, R.raw.menu_theme)
+                    backgroundMenuMusic = newBackgroundMusic
                     newBackgroundMusic.isLooping = true
                     newBackgroundMusic.setVolume(backgroundMusicVolume, backgroundMusicVolume)
-                    newBackgroundMusic.start()
+                    if (backgroundMusicType == BackgroundMusicType.MENU) newBackgroundMusic.start()
+                }
+                if (backgroundMainMusic == null) {
+                    val newBackgroundMusic = MediaPlayer.create(this@SoundService, R.raw.main_theme)
+                    backgroundMainMusic = newBackgroundMusic
+                    newBackgroundMusic.isLooping = true
+                    newBackgroundMusic.setVolume(backgroundMusicVolume, backgroundMusicVolume)
+                    if (backgroundMusicType == BackgroundMusicType.MAIN) newBackgroundMusic.start()
                 }
             }
         } catch (e: InterruptedException) {
@@ -140,9 +200,13 @@ class SoundService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        backgroundMusic?.stop()
-        backgroundMusic?.release()
-        backgroundMusic = null
+        backgroundMenuMusic?.stop()
+        backgroundMenuMusic?.release()
+        backgroundMenuMusic = null
+
+        backgroundMainMusic?.stop()
+        backgroundMainMusic?.release()
+        backgroundMainMusic = null
 
         getSoundPlayers().forEach { soundPlayer ->
             soundPlayer.stop()
@@ -159,6 +223,8 @@ enum class SoundServiceCommand {
     /** Should  */
     PAUSE,
     RESUME,
+    MENU_MUSIC,
+    MAIN_MUSIC,
     BACKGROUND_MUSIC_VOLUME_0,
     BACKGROUND_MUSIC_VOLUME_1,
     SOUND_VOLUME_0,
@@ -171,5 +237,12 @@ enum class SoundServiceCommand {
     PLAY_SOUND_CIRCLE_FAILED,
     PLAY_SOUND_CIRCLE_SUCCESS,
     PLAY_SOUND_LOOSE,
-    PLAY_SOUND_WIN
+    PLAY_SOUND_WIN_1,
+    PLAY_SOUND_WIN_2,
+    PLAY_SOUND_WIN_3
+}
+
+enum class BackgroundMusicType {
+    MENU,
+    MAIN
 }

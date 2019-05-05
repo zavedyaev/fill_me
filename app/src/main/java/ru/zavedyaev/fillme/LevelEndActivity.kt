@@ -99,6 +99,11 @@ class LevelEndActivity : BackgroundSoundActivity() {
             startActivity(i)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        mainBackgroundMusic()
+    }
 }
 
 enum class LevelEndStatus {

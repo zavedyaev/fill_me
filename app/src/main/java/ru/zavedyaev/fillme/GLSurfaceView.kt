@@ -28,7 +28,9 @@ class GLSurfaceView(
     private val playCircleFailedSound: () -> Unit,
     private val playCircleSuccessSound: () -> Unit,
     private val playLooseSound: () -> Unit,
-    private val playWinSound: () -> Unit
+    private val playWin1Sound: () -> Unit,
+    private val playWin2Sound: () -> Unit,
+    private val playWin3Sound: () -> Unit
 ) : GLSurfaceView(context) {
 
     private val renderer: GLRenderer
@@ -199,19 +201,19 @@ class GLSurfaceView(
 
                 val currentStarsCount = getCurrentStarsCount(circlesSquare)
                 if (currentStarsCount == 3) {
-                    playWinSound()
+                    playWin3Sound()
                     showLevelEndActivity(LevelEndStatus.WON_3)
                     return true
                 }
 
                 if (renderer.circlesDrawn >= winCondition.maxCirclesCount) {
                     if (currentStarsCount == 2) {
-                        playWinSound()
+                        playWin2Sound()
                         showLevelEndActivity(LevelEndStatus.WON_2)
                         return true
                     }
                     if (currentStarsCount == 1) {
-                        playWinSound()
+                        playWin1Sound()
                         showLevelEndActivity(LevelEndStatus.WON_1)
                         return true
                     }

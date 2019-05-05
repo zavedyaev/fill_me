@@ -43,4 +43,9 @@ class LevelSelectActivity : BackgroundSoundActivity() {
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(i)
     }
+
+    override fun onResume() {
+        super.onResume()
+        menuBackgroundMusic()
+    }
 }
