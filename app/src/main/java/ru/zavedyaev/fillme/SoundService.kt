@@ -90,19 +90,19 @@ class SoundService : Service() {
                 soundVolume = 1f
                 updateSoundVolume()
             }
-            SoundServiceCommand.PLAY_SOUND_BUTTON -> buttonSound.start()
+            SoundServiceCommand.PLAY_SOUND_BUTTON -> buttonSound.restart()
 
             SoundServiceCommand.PLAY_SOUND_CIRCLE_DRAW -> circleDrawSound.start()
             SoundServiceCommand.STOP_SOUND_CIRCLE_DRAW -> {
                 circleDrawSound.pause(); circleDrawSound.seekTo(0)
             }
 
-            SoundServiceCommand.PLAY_SOUND_CIRCLE_FAILED -> circleFailedSound.start()
-            SoundServiceCommand.PLAY_SOUND_CIRCLE_SUCCESS -> circleSuccessSound.start()
-            SoundServiceCommand.PLAY_SOUND_LOOSE -> looseSound.start()
-            SoundServiceCommand.PLAY_SOUND_WIN_1 -> win1Sound.start()
-            SoundServiceCommand.PLAY_SOUND_WIN_2 -> win2Sound.start()
-            SoundServiceCommand.PLAY_SOUND_WIN_3 -> win3Sound.start()
+            SoundServiceCommand.PLAY_SOUND_CIRCLE_FAILED -> circleFailedSound.restart()
+            SoundServiceCommand.PLAY_SOUND_CIRCLE_SUCCESS -> circleSuccessSound.restart()
+            SoundServiceCommand.PLAY_SOUND_LOOSE -> looseSound.restart()
+            SoundServiceCommand.PLAY_SOUND_WIN_1 -> win1Sound.restart()
+            SoundServiceCommand.PLAY_SOUND_WIN_2 -> win2Sound.restart()
+            SoundServiceCommand.PLAY_SOUND_WIN_3 -> win3Sound.restart()
 
             else -> Log.w("SoundService", "Unexpected SoundService command: $commandStr")
         }
@@ -154,6 +154,7 @@ class SoundService : Service() {
         getSoundPlayers().forEach {
             it.setVolume(soundVolume, soundVolume)
         }
+        circleDrawSound.setVolume(soundVolume*0.5f, soundVolume*0.5f)
     }
 
     private val afterPauseOrResumeSingleThreadRunnable = {
@@ -218,6 +219,15 @@ class SoundService : Service() {
         const val COMMAND_EXTRA_NAME = "COMMAND_EXTRA"
     }
 }
+
+fun MediaPlayer.restart() {
+    if (isPlaying) {
+        pause()
+        seekTo(0)
+    }
+    start()
+}
+
 
 enum class SoundServiceCommand {
     /** Should  */
