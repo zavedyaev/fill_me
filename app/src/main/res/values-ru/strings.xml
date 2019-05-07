@@ -42,7 +42,7 @@
     <string name="version">Версия: %1$s</string>
     <string name="source_code">Исходный Код: <a href="https://github.com/zavedyaev/fill_me">GitHub</a></string>
     <string name="about_design">Дизайн / Разработка: <a href="http://zavedyaev.ru">В.Заведяев</a></string>
-    <string name="about_music">Музыка / Звуки: <a href="https://vk.com/iprogger">Е.Владимиров</a></string>
+    <string name="about_music">Музыка / Звуки: Е.Владимиров, по вопросам сотрудничества: <a href="mailto:business@faultytrigger.com">business@faultytrigger.com</a></string>
     <string name="feedback">Обратная Связь</string>
     <string name="rate_or_share">Оценить</string>
 
