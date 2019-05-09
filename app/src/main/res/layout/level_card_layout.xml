@@ -62,8 +62,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="4dp">
                     <ImageButton
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:scaleType="center"
                             android:src="@drawable/ic_expand_more"
                             android:background="@android:color/transparent"
@@ -71,8 +71,8 @@
                             android:layout_gravity="end"
                             android:id="@+id/expandMoreButton"/>
                     <ImageButton
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:scaleType="center"
                             android:src="@drawable/ic_expand_less"
                             android:background="@android:color/transparent"

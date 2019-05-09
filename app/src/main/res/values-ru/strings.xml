@@ -37,7 +37,7 @@
     <string name="minimum_square_percentage">Минимальный процент площади</string>
     <string name="maximum_circles_count">Максимальное количество кругов</string>
     <string name="stars_required">%1$d/%2$d</string>
-    <string name="expand_button">Кнопка "расширить"</string>
+    <string name="expand_button">Кнопка расширить</string>
 
     <string name="version">Версия: %1$s</string>
     <string name="source_code">Исходный Код: <a href="https://github.com/zavedyaev/fill_me">GitHub</a></string>

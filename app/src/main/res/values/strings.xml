@@ -38,7 +38,7 @@
     <string name="minimum_square_percentage">Minimum square percentage</string>
     <string name="maximum_circles_count">Maximum circles count</string>
     <string name="stars_required">%1$d/%2$d</string>
-    <string name="expand_button">Expand Button</string>
+    <string name="expand_button">Expand</string>
 
     <string name="version">Version: %1$s</string>
     <string name="source_code">Source Code: <a href="https://github.com/zavedyaev/fill_me">GitHub</a></string>
