@@ -89,7 +89,7 @@ class GLSurfaceView(
         updateStatusIfNeeded(circlesSquare)
         winCondition = getCurrentWinCondition()
 
-        currentSquareTextView.text = resources.getString(R.string.filled_square_1, Math.round(circlesSquare * 100))
+        currentSquareTextView.text = resources.getString(R.string.filled_square_1, Math.floor(circlesSquare.toDouble() * 100))
         requiredSquareTextView.text =
                 resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
 
@@ -193,7 +193,7 @@ class GLSurfaceView(
                 winCondition = getCurrentWinCondition()
 
                 currentSquareTextView.text =
-                        resources.getString(R.string.filled_square_1, Math.round(circlesSquare * 100))
+                        resources.getString(R.string.filled_square_1, Math.floor(circlesSquare.toDouble() * 100))
                 requiredSquareTextView.text =
                         resources.getString(R.string.filled_square_2, Math.round(winCondition.minSquare * 100))
 
